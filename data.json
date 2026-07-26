@@ -1,0 +1,246 @@
+{
+ "people": [
+  {
+   "id": "天訁",
+   "name": "起飞🛫",
+   "avatar": "https://s41.ax1x.com/2026/05/24/pm9dn10.jpg",
+   "row": 0,
+   "order": 0,
+   "status": "active",
+   "collapsed": false
+  },
+  {
+   "id": "譜天之下",
+   "name": "起飞🛫",
+   "avatar": "",
+   "row": 0,
+   "order": 0,
+   "status": "active",
+   "collapsed": false
+  },
+  {
+   "id": "八万春丷",
+   "name": "八万春丷",
+   "avatar": "https://s41.ax1x.com/2026/05/30/pmkUZfH.jpg",
+   "row": 1,
+   "order": 1,
+   "status": "active",
+   "collapsed": false
+  },
+  {
+   "id": "姜闻野",
+   "name": "姜闻野",
+   "avatar": "https://s41.ax1x.com/2026/05/24/pm9d8AJ.jpg",
+   "row": 1,
+   "order": 2,
+   "status": "active",
+   "collapsed": false
+  },
+  {
+   "id": "杏酥仁",
+   "name": "杏酥仁",
+   "avatar": "https://s41.ax1x.com/2026/05/24/pm9dGN9.jpg",
+   "row": 1,
+   "order": 3,
+   "status": "active",
+   "collapsed": false
+  },
+  {
+   "id": "燕山晦明",
+   "name": "燕山晦明",
+   "avatar": "https://s41.ax1x.com/2026/05/29/pmFkXrV.jpg",
+   "row": 1,
+   "order": 4,
+   "status": "active",
+   "collapsed": false
+  },
+  {
+   "id": "江瑜七",
+   "name": "江瑜七",
+   "avatar": "https://s41.ax1x.com/2026/05/24/pm9dUc6.jpg",
+   "row": 1,
+   "order": 0,
+   "status": "active",
+   "collapsed": false
+  },
+  {
+   "id": "虞珂白",
+   "name": "虞珂白",
+   "avatar": "https://s41.ax1x.com/2026/05/24/pm9dUc6.jpg",
+   "row": 1,
+   "order": 0,
+   "status": "active",
+   "collapsed": false
+  },
+  {
+   "id": "沈岁愉",
+   "name": "轻涟",
+   "avatar": "https://s41.ax1x.com/2026/05/24/pm9d0BD.jpg",
+   "row": 1,
+   "order": 0,
+   "status": "active",
+   "collapsed": false
+  },
+  {
+   "id": "|昙梦|",
+   "name": "八万昙梦",
+   "avatar": "https://s41.ax1x.com/2026/05/29/pmFkzaF.jpg",
+   "row": 1,
+   "order": 0,
+   "status": "active",
+   "collapsed": false
+  },
+  {
+   "id": "说画",
+   "name": "画子",
+   "avatar": "https://s41.ax1x.com/2026/05/24/pm9dfu8.jpg",
+   "row": 2,
+   "order": 1,
+   "status": "active",
+   "collapsed": false
+  },
+  {
+   "id": "壹前",
+   "name": "壹前",
+   "avatar": "https://s41.ax1x.com/2026/05/24/pm9dhDS.jpg",
+   "row": 2,
+   "order": 2,
+   "status": "active",
+   "collapsed": false
+  },
+  {
+   "id": "月落山深",
+   "name": "笙笙辞",
+   "avatar": "https://s41.ax1x.com/2026/05/24/pm9dIEQ.jpg",
+   "row": 2,
+   "order": 3,
+   "status": "active",
+   "collapsed": false
+  },
+  {
+   "id": "想画",
+   "name": "敌意",
+   "avatar": "https://s41.ax1x.com/2026/05/24/pm9dT4s.jpg",
+   "row": 2,
+   "order": 1,
+   "status": "active",
+   "collapsed": false
+  },
+  {
+   "id": "祈曜",
+   "name": "祈曜",
+   "avatar": "https://s41.ax1x.com/2026/05/29/pmFAZVO.jpg",
+   "row": 2,
+   "order": 0,
+   "status": "active",
+   "collapsed": false
+  },
+  {
+   "id": "淳崽",
+   "name": "淳崽",
+   "avatar": "https://s41.ax1x.com/2026/05/24/pm9db3q.jpg",
+   "row": 2,
+   "order": 0,
+   "status": "active",
+   "collapsed": false
+  },
+  {
+   "id": "休葕",
+   "name": "休葕",
+   "avatar": "https://s41.ax1x.com/2026/05/29/pmFkb2n.jpg",
+   "row": 1,
+   "order": 0,
+   "status": "active",
+   "collapsed": false
+  }
+ ],
+ "edges": [
+  {
+   "a": "譜天之下",
+   "b": "天訁",
+   "type": "xiaohao"
+  },
+  {
+   "a": "八万春丷",
+   "b": "天訁",
+   "type": "shifu"
+  },
+  {
+   "a": "姜闻野",
+   "b": "天訁",
+   "type": "shifu"
+  },
+  {
+   "a": "杏酥仁",
+   "b": "天訁",
+   "type": "shifu"
+  },
+  {
+   "a": "燕山晦明",
+   "b": "天訁",
+   "type": "shifu"
+  },
+  {
+   "a": "江瑜七",
+   "b": "天訁",
+   "type": "bwshifu"
+  },
+  {
+   "a": "虞珂白",
+   "b": "天訁",
+   "type": "bwshifu"
+  },
+  {
+   "a": "沈岁愉",
+   "b": "天訁",
+   "type": "bwshifu"
+  },
+  {
+   "a": "|昙梦|",
+   "b": "天訁",
+   "type": "bwshifu"
+  },
+  {
+   "a": "说画",
+   "b": "八万春丷",
+   "type": "shifu"
+  },
+  {
+   "a": "壹前",
+   "b": "八万春丷",
+   "type": "shifu"
+  },
+  {
+   "a": "月落山深",
+   "b": "八万春丷",
+   "type": "shifu"
+  },
+  {
+   "a": "想画",
+   "b": "燕山晦明",
+   "type": "shifu"
+  },
+  {
+   "a": "祈曜",
+   "b": "燕山晦明",
+   "type": "bwshifu"
+  },
+  {
+   "a": "淳崽",
+   "b": "|昙梦|",
+   "type": "bwshifu"
+  },
+  {
+   "a": "休葕",
+   "b": "天訁",
+   "type": "bwshifu"
+  }
+ ],
+ "rowNames": [
+  "开山",
+  "二代",
+  "三代",
+  "四代",
+  "五代"
+ ]
+}
