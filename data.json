@@ -11,12 +11,14 @@
   },
   {
    "id": "譜天之下",
-   "name": "起飞🛫",
+   "name": "譜天之下虹虹",
    "avatar": "",
-   "row": 0,
-   "order": 0,
+   "row": 2,
+   "order": 2,
    "status": "active",
-   "collapsed": false
+   "collapsed": false,
+   "slot": null,
+   "x": 686.093
   },
   {
    "id": "八万春丷",
@@ -34,7 +36,8 @@
    "row": 1,
    "order": 2,
    "status": "active",
-   "collapsed": false
+   "collapsed": false,
+   "x": 291.705
   },
   {
    "id": "杏酥仁",
@@ -43,7 +46,8 @@
    "row": 1,
    "order": 3,
    "status": "active",
-   "collapsed": false
+   "collapsed": false,
+   "x": 422.044
   },
   {
    "id": "燕山晦明",
@@ -61,7 +65,8 @@
    "row": 1,
    "order": 0,
    "status": "active",
-   "collapsed": false
+   "collapsed": false,
+   "x": 673.238
   },
   {
    "id": "虞珂白",
@@ -70,7 +75,8 @@
    "row": 1,
    "order": 0,
    "status": "active",
-   "collapsed": false
+   "collapsed": false,
+   "x": 901.09
   },
   {
    "id": "沈岁愉",
@@ -79,7 +85,8 @@
    "row": 1,
    "order": 0,
    "status": "active",
-   "collapsed": false
+   "collapsed": false,
+   "x": 789.007
   },
   {
    "id": "|昙梦|",
@@ -88,7 +95,8 @@
    "row": 1,
    "order": 0,
    "status": "active",
-   "collapsed": false
+   "collapsed": false,
+   "x": 1033.32
   },
   {
    "id": "说画",
@@ -97,7 +105,8 @@
    "row": 2,
    "order": 1,
    "status": "active",
-   "collapsed": false
+   "collapsed": false,
+   "x": 35.9938
   },
   {
    "id": "壹前",
@@ -106,7 +115,8 @@
    "row": 2,
    "order": 2,
    "status": "active",
-   "collapsed": false
+   "collapsed": false,
+   "x": 167.011
   },
   {
    "id": "月落山深",
@@ -115,7 +125,8 @@
    "row": 2,
    "order": 3,
    "status": "active",
-   "collapsed": false
+   "collapsed": false,
+   "x": 296.204
   },
   {
    "id": "想画",
@@ -124,7 +135,8 @@
    "row": 2,
    "order": 1,
    "status": "active",
-   "collapsed": false
+   "collapsed": false,
+   "x": 423.669
   },
   {
    "id": "祈曜",
@@ -133,7 +145,8 @@
    "row": 2,
    "order": 0,
    "status": "active",
-   "collapsed": false
+   "collapsed": false,
+   "x": 563.331
   },
   {
    "id": "淳崽",
@@ -142,7 +155,8 @@
    "row": 2,
    "order": 0,
    "status": "active",
-   "collapsed": false
+   "collapsed": false,
+   "x": 1031.33
   },
   {
    "id": "休葕",
@@ -151,15 +165,11 @@
    "row": 1,
    "order": 0,
    "status": "active",
-   "collapsed": false
+   "collapsed": false,
+   "x": 1165.33
   }
  ],
  "edges": [
-  {
-   "a": "譜天之下",
-   "b": "天訁",
-   "type": "xiaohao"
-  },
   {
    "a": "八万春丷",
    "b": "天訁",
@@ -234,6 +244,61 @@
    "a": "休葕",
    "b": "天訁",
    "type": "bwshifu"
+  },
+  {
+   "a": "|昙梦|",
+   "b": "燕山晦明",
+   "type": "jieyi"
+  },
+  {
+   "a": "|昙梦|",
+   "b": "燕山晦明",
+   "type": "xiayuan"
+  },
+  {
+   "a": "|昙梦|",
+   "b": "淳崽",
+   "type": "xiayuan"
+  },
+  {
+   "a": "|昙梦|",
+   "b": "淳崽",
+   "type": "jieyi"
+  },
+  {
+   "a": "八万春丷",
+   "b": "江瑜七",
+   "type": "qinyou"
+  },
+  {
+   "a": "八万春丷",
+   "b": "虞珂白",
+   "type": "qinyou"
+  },
+  {
+   "a": "八万春丷",
+   "b": "沈岁愉",
+   "type": "qinyou"
+  },
+  {
+   "a": "江瑜七",
+   "b": "沈岁愉",
+   "type": "qinyou"
+  },
+  {
+   "a": "江瑜七",
+   "b": "虞珂白",
+   "type": "qinyou"
+  },
+  {
+   "a": "沈岁愉",
+   "b": "虞珂白",
+   "type": "qinyou"
+  },
+  {
+   "a": "譜天之下",
+   "b": "燕山晦明",
+   "type": "shifu"
   }
  ],
  "rowNames": [
