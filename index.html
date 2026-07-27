@@ -1,1 +1,1355 @@
 
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>萝卜开会 · 师门谱</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f5f0e6; --paper2:#efe8d8; --ink:#2b2622; --ink-soft:#6b6156;
+  --cinnabar:#b4452f; --gold:#b38600; --rose:#d6547a; --cyan:#3a6ea5; --lead:#8a857d;
+  --card-w:104px; --card-h:132px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden}
+body{
+  font-family:"Songti SC","STSong","Noto Serif SC","SimSun",serif;
+  background:var(--paper);color:var(--ink);
+  background-image:
+    radial-gradient(ellipse at 8% 4%, rgba(120,90,40,.06), transparent 55%),
+    radial-gradient(ellipse at 95% 96%, rgba(120,90,40,.07), transparent 55%);
+  user-select:none;-webkit-user-select:none;
+}
+/* ---------- header ---------- */
+#topbar{
+  position:relative;z-index:50;display:flex;align-items:center;gap:12px;
+  padding:10px 16px;background:linear-gradient(var(--paper2),var(--paper));
+  border-bottom:1px solid #ddd2ba;box-shadow:0 2px 10px rgba(60,45,20,.06);
+}
+#title{display:flex;align-items:baseline;gap:10px;white-space:nowrap}
+#title h1{font-size:20px;letter-spacing:2px;font-weight:700}
+#title small{font-size:11px;color:var(--ink-soft);letter-spacing:1px}
+#search{flex:1;max-width:260px;min-width:90px;padding:7px 12px;border:1px solid #cbbfa4;border-radius:4px;
+  background:#fffdf6;font-family:inherit;font-size:13px;outline:none}
+#search:focus{border-color:var(--cinnabar)}
+.tbtn{cursor:pointer;border:1px solid #cbbfa4;background:#fffdf6;border-radius:4px;padding:7px 12px;
+  font-family:inherit;font-size:13px;color:var(--ink);transition:.15s;white-space:nowrap}
+.tbtn:hover{border-color:var(--cinnabar);color:var(--cinnabar)}
+#sealBtn{
+  width:40px;height:40px;border-radius:6px;background:var(--cinnabar);color:#fff;
+  border:none;font-size:15px;cursor:pointer;box-shadow:2px 2px 0 rgba(90,20,5,.25);
+  font-family:inherit;letter-spacing:0;line-height:1;transform:rotate(-4deg);
+}
+#sealBtn:active{transform:rotate(-4deg) scale(.94)}
+/* ---------- tool panel ---------- */
+#panel{
+  position:absolute;top:56px;right:12px;z-index:60;width:248px;background:#fffdf6;
+  border:1px solid #d8ccb2;border-radius:8px;box-shadow:0 8px 30px rgba(60,45,20,.18);
+  padding:14px;display:none;
+}
+#panel.open{display:block}
+#panel h4{font-size:13px;color:var(--ink-soft);margin:10px 0 6px;letter-spacing:2px}
+#panel h4:first-child{margin-top:0}
+#panel .row{display:flex;flex-wrap:wrap;gap:6px}
+.pbtn{cursor:pointer;border:1px solid #cbbfa4;background:#fbf7ec;border-radius:4px;padding:6px 10px;
+  font-family:inherit;font-size:12px;color:var(--ink)}
+.pbtn:hover{border-color:var(--cinnabar);color:var(--cinnabar)}
+.pbtn.danger{color:var(--cinnabar);border-color:#e0b3a6}
+.legend-item{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--ink-soft);padding:2px 0}
+.lg-line{width:26px;height:0;border-top:2px solid}
+.lg-dash{border-top-style:dashed}
+/* ---------- stage ---------- */
+#stage{position:absolute;inset:61px 0 0 0;overflow:hidden;cursor:grab;touch-action:none}
+#stage.grabbing{cursor:grabbing}
+#world{position:absolute;left:0;top:0;transform-origin:0 0}
+#links{position:absolute;left:0;top:0;overflow:visible;pointer-events:none}
+#links path{fill:none;transition:opacity .15s}
+#links path.fdim,#links text.fdim{opacity:.12}
+#lanes,#cards{pointer-events:none}
+.lane{pointer-events:none}
+/* lanes */
+.lane{position:absolute;left:0;border-top:1px dashed rgba(107,97,86,.28)}
+.lane-tag{
+  position:absolute;left:14px;top:10px;font-size:13px;letter-spacing:4px;color:var(--ink-soft);
+  writing-mode:vertical-rl;opacity:.75;pointer-events:none;
+}
+.lane-bg{position:absolute;left:0;right:0;top:0;bottom:0;pointer-events:none}
+/* ---------- cards ---------- */
+.card{
+  position:absolute;width:var(--card-w);background:#fffdf8;border:1px solid #d9cdb4;border-radius:8px;
+  box-shadow:0 3px 10px rgba(60,45,20,.10), inset 0 0 0 3px rgba(245,240,230,.9);
+  padding:10px 6px 8px;text-align:center;cursor:pointer;transition:box-shadow .15s;
+  pointer-events:auto;
+}
+.card:hover{box-shadow:0 6px 18px rgba(60,45,20,.18)}
+.card.sel{border-color:var(--cinnabar);box-shadow:0 0 0 2px rgba(180,69,47,.35),0 6px 18px rgba(60,45,20,.2)}
+.card.hit{border-color:var(--gold);box-shadow:0 0 0 3px rgba(179,134,0,.35)}
+.card.drag{opacity:.85;z-index:20;box-shadow:0 12px 30px rgba(60,45,20,.3)}
+.card .av{width:46px;height:46px;border-radius:50%;margin:0 auto 6px;overflow:hidden;
+  border:2px solid #cbbfa4;background:#e8e0cd;display:flex;align-items:center;justify-content:center;
+  font-size:18px;color:#a89a80}
+.card .av img{width:100%;height:100%;object-fit:cover;display:block}
+.card .pid{font-size:14px;font-weight:700;letter-spacing:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.card .pname{font-size:11px;color:var(--ink-soft);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.card .seal{
+  position:absolute;right:5px;bottom:5px;min-width:20px;height:20px;padding:0 3px;border-radius:3px;
+  background:var(--cinnabar);color:#fff;font-size:11px;line-height:20px;transform:rotate(-4deg);
+  box-shadow:1px 1px 0 rgba(90,20,5,.3);
+}
+.card .st-badge{position:absolute;left:5px;top:5px;font-size:10px;padding:1px 5px;border-radius:3px;color:#fff}
+.card .st-badge.away{background:#9a938a}.card .st-badge.retired{background:#5c5650}
+.card.st-away,.card.st-retired{filter:saturate(.35) opacity(.8)}
+.card .branch{
+  position:absolute;left:50%;transform:translateX(-50%);bottom:-14px;
+  background:var(--gold);color:#fff;font-size:10px;padding:1px 8px;border-radius:8px;white-space:nowrap;
+  box-shadow:0 2px 4px rgba(60,45,20,.2);
+}
+.card.mini{width:64px;padding:6px 4px;opacity:.95}
+.card.mini .av{width:26px;height:26px;font-size:11px;margin-bottom:3px}
+.card.mini .pid{font-size:10px}
+.card.mini .pname{display:none}
+/* ---------- drawer ---------- */
+#drawer{
+  position:absolute;top:0;right:0;bottom:0;width:290px;z-index:70;background:#fffdf6;
+  border-left:1px solid #d8ccb2;box-shadow:-8px 0 30px rgba(60,45,20,.15);
+  transform:translateX(105%);transition:transform .22s;padding:18px;overflow-y:auto;
+}
+#drawer.open{transform:translateX(0)}
+#drawer h3{font-size:17px;letter-spacing:1px;margin-bottom:2px}
+#drawer .sub{font-size:12px;color:var(--ink-soft);margin-bottom:12px}
+#drawer .drow{margin-bottom:10px;font-size:13px}
+#drawer .drow b{color:var(--ink-soft);font-weight:400;margin-right:6px}
+.rel-item{display:flex;align-items:center;gap:8px;font-size:13px;padding:6px 8px;border:1px solid #e4d9c0;
+  border-radius:5px;margin-bottom:6px;background:#fbf7ec}
+.rel-item .rm{margin-left:auto;cursor:pointer;color:var(--cinnabar);border:none;background:none;font-size:14px}
+#drawer .acts{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+/* ---------- modal ---------- */
+.modal{position:fixed;inset:0;z-index:100;background:rgba(43,38,34,.45);display:none;
+  align-items:center;justify-content:center;backdrop-filter:blur(2px)}
+.modal.open{display:flex}
+.mbox{background:#fffdf6;border:1px solid #d8ccb2;border-radius:10px;width:92%;max-width:400px;
+  padding:20px;box-shadow:0 14px 40px rgba(0,0,0,.25);max-height:85vh;overflow-y:auto}
+.mbox h3{font-size:16px;margin-bottom:14px;letter-spacing:1px}
+.mbox label{display:block;font-size:12px;color:var(--ink-soft);margin:8px 0 3px}
+.mbox input,.mbox select{width:100%;padding:8px 10px;border:1px solid #cbbfa4;border-radius:4px;
+  background:#fff;font-family:inherit;font-size:14px;outline:none}
+.mbox .mrow{display:flex;gap:8px;margin-top:16px}
+.mbox .mrow .tbtn{flex:1;text-align:center}
+.rowm-item{display:flex;gap:6px;margin-bottom:6px;align-items:center}
+.rowm-item input{flex:1}
+/* ---------- misc ---------- */
+#motto{
+  position:absolute;bottom:10px;left:0;right:0;text-align:center;pointer-events:none;z-index:40;
+  font-size:12px;letter-spacing:3px;color:rgba(107,97,86,.55);
+}
+#toast{
+  position:fixed;top:70px;left:50%;transform:translateX(-50%);z-index:200;background:var(--ink);
+  color:#f5f0e6;padding:8px 18px;border-radius:20px;font-size:13px;opacity:0;transition:.25s;pointer-events:none;
+}
+#toast.show{opacity:.92}
+body.view .edit-only{display:none!important}
+@media (max-width:640px){
+  #title h1{font-size:16px}
+  #title small{display:none}
+  #drawer{top:auto;left:0;right:0;bottom:0;width:auto;height:62%;border-left:none;
+    border-top:1px solid #d8ccb2;transform:translateY(105%);border-radius:14px 14px 0 0}
+  #drawer.open{transform:translateY(0)}
+  #panel{right:8px;left:8px;width:auto}
+}
+
+/* ============ 燕云美学层：玄墨 · 描金 · 朱砂 ============ */
+:root{ --gold:#c9a84c; --gold-dim:rgba(201,168,76,.42); --rice:#e6ddc8; --rice-soft:#9a917c; --xuan:#0f141b; }
+body{
+  font-family:"Noto Serif SC","Songti SC","STSong","SimSun",serif;
+  color:var(--rice);
+  background-color:var(--xuan);
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 .8 0 0 0 0 .75 0 0 0 0 .6 0 0 0 .04 0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E"),
+    radial-gradient(ellipse at 15% 0%, rgba(60,80,110,.20), transparent 60%),
+    radial-gradient(ellipse at 90% 100%, rgba(40,55,75,.22), transparent 55%),
+    linear-gradient(#121822, #0c1016);
+}
+/* 远山剪影 */
+#mountains{position:fixed;left:0;right:0;bottom:0;height:34vh;z-index:1;pointer-events:none;opacity:.5}
+#stage{z-index:2}
+#topbar{position:relative;z-index:50;
+  background:linear-gradient(#161d27,#10151d);
+  border-bottom:1px solid rgba(201,168,76,.30);
+  box-shadow:0 2px 16px rgba(0,0,0,.5);
+}
+#title h1{font-family:"Ma Shan Zheng","Noto Serif SC",serif;font-size:26px;font-weight:400;letter-spacing:4px;
+  color:var(--gold);text-shadow:0 0 18px rgba(201,168,76,.35)}
+#title small{color:var(--rice-soft)}
+#search{
+  background:#0c1016;border:1px solid rgba(201,168,76,.30);border-radius:2px;color:var(--rice);
+  box-shadow:inset 0 1px 4px rgba(0,0,0,.5);
+}
+#search::placeholder{color:#6b6353}
+#search:focus{border-color:var(--gold)}
+.tbtn{
+  background:#161d27;border:1px solid rgba(201,168,76,.35);border-radius:2px;color:var(--rice);
+  box-shadow:1px 1px 0 rgba(0,0,0,.4);
+}
+.tbtn:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-1px)}
+#sealBtn{
+  border-radius:3px;box-shadow:2px 2px 0 rgba(0,0,0,.5), inset 0 0 6px rgba(255,255,255,.2);
+  font-family:"Ma Shan Zheng",serif;font-size:19px;
+}
+#panel{
+  background:#141a23;border:1px solid var(--gold-dim);border-radius:4px;
+  box-shadow:0 12px 38px rgba(0,0,0,.6);
+}
+#panel h4{color:var(--gold);letter-spacing:3px}
+.pbtn{background:#1a222d;border:1px solid rgba(201,168,76,.3);border-radius:2px;color:var(--rice)}
+.pbtn:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-1px)}
+.pbtn.danger{color:#d4765e;border-color:rgba(180,90,60,.5)}
+.legend-item{color:var(--rice-soft)}
+/* 泳道与排标：暗金分隔 + 竖排墨签 */
+.lane{border-top:1px solid rgba(201,168,76,.10)}
+.lane-tag{
+  left:16px;top:14px;padding:9px 4px;font-size:12px;letter-spacing:5px;
+  color:var(--gold);background:rgba(20,26,35,.85);border:1px solid rgba(201,168,76,.35);
+  border-radius:2px;box-shadow:0 2px 8px rgba(0,0,0,.5);opacity:.95;
+}
+/* 名帖卡片：玄底描金 */
+.card{
+  background:linear-gradient(#1d242f,#151b24);
+  border:1px solid var(--gold-dim);border-radius:4px;
+  box-shadow:0 6px 16px rgba(0,0,0,.5), inset 0 0 0 3px #151b24, inset 0 0 0 4px rgba(201,168,76,.22);
+  transition:box-shadow .18s, transform .18s;
+  animation:cardIn .28s ease;
+}
+@keyframes cardIn{from{opacity:0;transform:translateY(6px)}to{opacity:1}}
+.card:hover{transform:translateY(-3px);box-shadow:0 10px 26px rgba(0,0,0,.6), 0 0 14px rgba(201,168,76,.18), inset 0 0 0 3px #151b24, inset 0 0 0 4px rgba(201,168,76,.3)}
+.card .av{
+  border:2px solid var(--gold);background:#232b38;color:#8a7f63;
+  box-shadow:0 0 0 2px #151b24, 0 0 0 3px rgba(201,168,76,.5), 0 2px 6px rgba(0,0,0,.5);
+}
+.card .pid{font-weight:600;color:var(--rice)}
+.card .pname{color:var(--rice-soft)}
+.card .seal{
+  font-family:"Ma Shan Zheng",serif;font-size:12px;border-radius:2px;
+  background:var(--cinnabar);box-shadow:1px 1px 0 rgba(0,0,0,.5), inset 0 0 4px rgba(255,255,255,.2);
+}
+.card .st-badge.away{background:#5c5650}.card .st-badge.retired{background:#3d3a36}
+.card .branch{background:#8a6f2f;box-shadow:0 2px 6px rgba(0,0,0,.5);letter-spacing:1px}
+.card.sel{border-color:var(--gold);box-shadow:0 0 0 2px rgba(201,168,76,.5), 0 0 20px rgba(201,168,76,.3)}
+.card.hit{border-color:#d4765e;box-shadow:0 0 0 2px rgba(212,118,94,.55), 0 0 18px rgba(212,118,94,.3)}
+/* 连线 */
+#links path{stroke-linecap:round;stroke-linejoin:round}
+#links text{paint-order:stroke;stroke:#0f141b;stroke-width:3.5px;font-weight:600}
+#links{animation:fadeIn .6s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+/* 抽屉 / 弹窗 / 其他 */
+#drawer{background:#141a23;border-left:1px solid var(--gold-dim);box-shadow:-10px 0 34px rgba(0,0,0,.55)}
+#drawer h3{color:var(--gold);letter-spacing:2px}
+#drawer .sub{color:var(--rice-soft)}
+#drawer .drow b{color:var(--rice-soft)}
+.rel-item{background:#1a222d;border-color:rgba(201,168,76,.2);border-radius:3px;color:var(--rice)}
+.rel-item .rm{color:#d4765e}
+.modal{background:rgba(5,8,12,.7)}
+.mbox{background:#141a23;border:1px solid var(--gold-dim);border-radius:6px;box-shadow:0 16px 46px rgba(0,0,0,.7)}
+.mbox h3{color:var(--gold)}
+.mbox label{color:var(--rice-soft)}
+.mbox input,.mbox select{background:#0c1016;border-color:rgba(201,168,76,.3);color:var(--rice)}
+#motto{color:rgba(154,145,124,.5);letter-spacing:5px}
+#toast{background:#1d242f;border:1px solid var(--gold-dim);color:var(--rice);border-radius:2px;letter-spacing:1px}
+/* 开场卷轴 */
+#intro{
+  position:fixed;inset:0;z-index:999;background:#070a0e;
+  display:flex;align-items:center;justify-content:center;flex-direction:column;gap:26px;
+  animation:introOut .6s ease 2s forwards;
+}
+@keyframes introOut{to{opacity:0;visibility:hidden}}
+#intro .scroll{
+  position:relative;height:240px;width:0;overflow:hidden;
+  background:linear-gradient(#1d242f,#131922);
+  border-top:1px solid var(--gold-dim);border-bottom:1px solid var(--gold-dim);
+  box-shadow:0 20px 60px rgba(0,0,0,.7);
+  animation:unroll 1.3s cubic-bezier(.6,.05,.3,1) .25s forwards;
+  display:flex;align-items:center;justify-content:center;
+}
+@keyframes unroll{from{width:0}to{width:min(86vw,880px)}}
+#intro .roller{
+  position:absolute;top:-16px;bottom:-16px;width:20px;border-radius:10px;
+  background:linear-gradient(90deg,#241c10,#a98a45 45%,#241c10);
+  box-shadow:0 0 0 1px rgba(201,168,76,.4), 0 6px 16px rgba(0,0,0,.6);
+}
+#intro .roller.l{left:-10px}#intro .roller.r{right:-10px}
+#intro .stitle{
+  white-space:nowrap;font-family:"Ma Shan Zheng",serif;font-size:46px;letter-spacing:12px;
+  color:var(--gold);text-shadow:0 0 26px rgba(201,168,76,.4);
+  opacity:0;animation:fadeIn .7s ease 1s forwards;
+}
+#intro .ssub{
+  font-size:13px;letter-spacing:6px;color:var(--rice-soft);
+  opacity:0;animation:fadeIn .7s ease 1.5s forwards;
+}
+@media (max-width:640px){
+  #title h1{font-size:19px}
+  #intro .stitle{font-size:30px;letter-spacing:8px}
+  #intro .scroll{height:180px}
+  /* 顶栏：允许换行、按钮紧凑 */
+  #topbar{flex-wrap:wrap;gap:8px;padding:8px 10px}
+  #search{order:5;flex:1 1 100%;max-width:none}
+  .tbtn{padding:8px 10px;font-size:12px}
+  #undoBtn{font-size:0;width:38px;height:38px;padding:0}
+  #undoBtn::before{content:"↩";font-size:16px}
+  #fitBtn{font-size:0;width:38px;height:38px;padding:0}
+  #fitBtn::before{content:"⟳";font-size:16px}
+  #modeBtn{font-size:12px}
+  #sealBtn{width:38px;height:38px;font-size:16px}
+  /* 舞台让出顶栏真实高度（换行后约 108px） */
+  #stage{inset:108px 0 0 0}
+  /* 分支徽标触达面积 */
+  .card .branch{bottom:-16px;padding:3px 12px;font-size:11px}
+  /* 抽屉：底部 Sheet + 把手 + 安全区 */
+  #drawer{padding-bottom:calc(18px + env(safe-area-inset-bottom))}
+  #drawer::before{content:"";display:block;width:44px;height:4px;border-radius:2px;
+    background:rgba(201,168,76,.4);margin:0 auto 12px}
+  /* 面板超高可滚动 */
+  #panel{max-height:60vh;overflow-y:auto}
+  /* 题字避让 Home 指示条 */
+  #motto{bottom:calc(8px + env(safe-area-inset-bottom))}
+  /* 弹窗按钮加大 */
+  .mbox .mrow .tbtn{padding:12px;font-size:14px;height:auto;width:auto}
+}
+</style>
+</head>
+<body class="view">
+
+<div id="intro">
+  <div class="scroll">
+    <div class="roller l"></div><div class="roller r"></div>
+    <div class="stitle">萝卜开会 · 师门谱</div>
+  </div>
+  <div class="ssub">花叶同春 · 岁岁年年</div>
+</div>
+
+<div id="mountains">
+  <svg width="100%" height="100%" viewBox="0 0 1440 320" preserveAspectRatio="none">
+    <path d="M0 320 L0 240 L180 140 L320 230 L480 110 L640 220 L820 130 L1000 240 L1180 160 L1330 240 L1440 190 L1440 320 Z" fill="#151c26"/>
+    <path d="M0 320 L0 280 L220 210 L420 280 L620 200 L840 285 L1080 215 L1290 285 L1440 245 L1440 320 Z" fill="#10161e"/>
+  </svg>
+</div>
+
+<div id="topbar">
+  <div id="title"><h1>萝卜开会 · 师门谱</h1><small>花叶同春 · 岁岁年年</small></div>
+  <input id="search" placeholder="搜 ID / 备注…">
+  <button class="tbtn" id="undoBtn" title="撤销 (Ctrl+Z)">↩ 撤销</button>
+  <button class="tbtn" id="fitBtn">⟳ 视角</button>
+  <button class="tbtn" id="modeBtn" title="切换观察/编辑模式">✎ 编辑</button>
+  <button id="sealBtn" title="工具">印</button>
+</div>
+
+<div id="panel">
+  <h4 class="edit-only">门 务</h4>
+  <div class="row edit-only">
+    <button class="pbtn" id="addPerson">➕ 新增门人</button>
+    <button class="pbtn" id="addRel">🔗 建立关系</button>
+    <button class="pbtn" id="rowMgr">☰ 辈分排管理</button>
+  </div>
+  <h4 class="edit-only">云 端</h4>
+  <div class="row edit-only">
+    <button class="pbtn" id="pubBtn">☁ 发布到 GitHub</button>
+    <button class="pbtn" id="ghCfgBtn">⚙ 云端设置</button>
+  </div>
+  <div class="edit-only" id="cloudStatus" style="font-size:11px;color:var(--rice-soft);margin-top:4px"></div>
+  <h4>数 据</h4>
+  <div class="row">
+    <button class="pbtn" id="exportBtn">💾 导出 JSON</button>
+    <button class="pbtn edit-only" id="importBtn">📂 导入 JSON</button>
+    <button class="pbtn danger edit-only" id="resetBtn">🗑 恢复初始</button>
+  </div>
+  <h4>图 例</h4>
+  <div>
+    <div class="legend-item"><span class="lg-line" style="border-color:#d8c9a3"></span>正式师徒</div>
+    <div class="legend-item"><span class="lg-line lg-dash" style="border-color:#7d838e"></span>编外师徒</div>
+    <div class="legend-item"><span class="lg-line" style="border-color:#d4af37"></span>结义</div>
+    <div class="legend-item"><span class="lg-line" style="border-color:#e06c8d"></span>侠缘</div>
+    <div class="legend-item"><span class="lg-line" style="border-color:#6fa8d8"></span>亲友</div>
+    <div class="legend-item"><span class="lg-line lg-dash" style="border-color:#6b6f78"></span>小号依附</div>
+  </div>
+</div>
+
+<div id="stage">
+  <div id="world">
+    <svg id="links"></svg>
+    <div id="lanes"></div>
+    <div id="cards"></div>
+  </div>
+</div>
+
+<div id="motto">｜花叶同春，岁岁年年，千秋共颂，你我长青｜</div>
+
+<div id="drawer"></div>
+
+<!-- 人物表单 -->
+<div class="modal" id="personModal">
+  <div class="mbox">
+    <h3 id="pmTitle">新增门人</h3>
+    <label>ID（游戏名，唯一）</label><input id="pmId">
+    <label>备注名</label><input id="pmName">
+    <label>头像链接</label><input id="pmAvatar" placeholder="https://…">
+    <label>所在辈分排</label><select id="pmRow"></select>
+    <label>状态</label>
+    <select id="pmStatus"><option value="active">在门</option><option value="away">出走</option><option value="retired">隐退</option></select>
+    <label>入门排序（同师父中第几位，0=不参与排行）</label><input id="pmOrder" type="number" value="0">
+    <div class="mrow">
+      <button class="tbtn" id="pmSave" style="background:var(--cinnabar);color:#fff;border:none">确认</button>
+      <button class="tbtn" onclick="closeModal('personModal')">取消</button>
+    </div>
+  </div>
+</div>
+
+<!-- 关系表单 -->
+<div class="modal" id="relModal">
+  <div class="mbox">
+    <h3>建立关系</h3>
+    <label>关系类型</label>
+    <select id="rmType">
+      <option value="shifu">⬛ 正式师徒（B 是 A 的师父）</option>
+      <option value="bwshifu">▫ 编外师徒（B 是 A 的编外师父）</option>
+      <option value="jieyi">🟨 结义（A 与 B）</option>
+      <option value="xiayuan">🟥 侠缘（A 与 B）</option>
+      <option value="qinyou">🟦 亲友（A 与 B）</option>
+      <option value="xiaohao">📎 小号依附（A 是 B 的小号）</option>
+    </select>
+    <label>门人 A</label><select id="rmA"></select>
+    <label>门人 B</label><select id="rmB"></select>
+    <div class="mrow">
+      <button class="tbtn" id="rmSave" style="background:var(--cinnabar);color:#fff;border:none">确认建立</button>
+      <button class="tbtn" onclick="closeModal('relModal')">取消</button>
+    </div>
+  </div>
+</div>
+
+<!-- 辈分排管理 -->
+<div class="modal" id="rowsModal">
+  <div class="mbox">
+    <h3>辈分排管理</h3>
+    <div id="rowsList"></div>
+    <div class="mrow">
+      <button class="tbtn" id="addRowBtn">＋ 加一排</button>
+      <button class="tbtn" onclick="closeModal('rowsModal')">完成</button>
+    </div>
+  </div>
+</div>
+
+<!-- GitHub 云端设置 -->
+<div class="modal" id="ghModal">
+  <div class="mbox">
+    <h3>⚙ GitHub 云端设置</h3>
+    <div style="font-size:12px;color:var(--rice-soft);margin-bottom:8px;line-height:1.7">
+      仅编辑者需要设置，令牌只保存在你自己的浏览器里。<br>
+      令牌申请：GitHub → Settings → Developer settings → Personal access tokens → Fine-grained，<br>
+      只选这一个仓库，权限给 <b>Contents: Read and write</b>。
+    </div>
+    <label>仓库所有者（用户名/组织）</label><input id="ghOwner" placeholder="例如 luobokaihui">
+    <label>仓库名</label><input id="ghRepo" placeholder="例如 shimenpu">
+    <label>分支</label><input id="ghBranch" placeholder="main">
+    <label>访问令牌（PAT）</label><input id="ghToken" type="password" placeholder="github_pat_…">
+    <div class="mrow">
+      <button class="tbtn" id="ghSave" style="background:var(--cinnabar);color:#fff;border:none">保存设置</button>
+      <button class="tbtn" onclick="closeModal('ghModal')">取消</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+/* ================= 初始数据（旧版迁移） ================= */
+const INITIAL_DATA = {
+ "people": [
+  {"id":"天訁","name":"起飞🛫","avatar":"https://s41.ax1x.com/2026/05/24/pm9dn10.jpg","row":0,"order":0,"status":"active","collapsed":false},
+  {"id":"譜天之下","name":"起飞🛫","avatar":"","row":0,"order":0,"status":"active","collapsed":false},
+  {"id":"八万春丷","name":"八万春丷","avatar":"https://s41.ax1x.com/2026/05/30/pmkUZfH.jpg","row":1,"order":1,"status":"active","collapsed":false},
+  {"id":"姜闻野","name":"姜闻野","avatar":"https://s41.ax1x.com/2026/05/24/pm9d8AJ.jpg","row":1,"order":2,"status":"active","collapsed":false},
+  {"id":"杏酥仁","name":"杏酥仁","avatar":"https://s41.ax1x.com/2026/05/24/pm9dGN9.jpg","row":1,"order":3,"status":"active","collapsed":false},
+  {"id":"燕山晦明","name":"燕山晦明","avatar":"https://s41.ax1x.com/2026/05/29/pmFkXrV.jpg","row":1,"order":4,"status":"active","collapsed":false},
+  {"id":"江瑜七","name":"江瑜七","avatar":"https://s41.ax1x.com/2026/05/24/pm9dUc6.jpg","row":1,"order":0,"status":"active","collapsed":false},
+  {"id":"虞珂白","name":"虞珂白","avatar":"https://s41.ax1x.com/2026/05/24/pm9dUc6.jpg","row":1,"order":0,"status":"active","collapsed":false},
+  {"id":"沈岁愉","name":"轻涟","avatar":"https://s41.ax1x.com/2026/05/24/pm9d0BD.jpg","row":1,"order":0,"status":"active","collapsed":false},
+  {"id":"|昙梦|","name":"八万昙梦","avatar":"https://s41.ax1x.com/2026/05/29/pmFkzaF.jpg","row":1,"order":0,"status":"active","collapsed":false},
+  {"id":"说画","name":"画子","avatar":"https://s41.ax1x.com/2026/05/24/pm9dfu8.jpg","row":2,"order":1,"status":"active","collapsed":false},
+  {"id":"壹前","name":"壹前","avatar":"https://s41.ax1x.com/2026/05/24/pm9dhDS.jpg","row":2,"order":2,"status":"active","collapsed":false},
+  {"id":"月落山深","name":"笙笙辞","avatar":"https://s41.ax1x.com/2026/05/24/pm9dIEQ.jpg","row":2,"order":3,"status":"active","collapsed":false},
+  {"id":"想画","name":"敌意","avatar":"https://s41.ax1x.com/2026/05/24/pm9dT4s.jpg","row":2,"order":1,"status":"active","collapsed":false},
+  {"id":"祈曜","name":"祈曜","avatar":"https://s41.ax1x.com/2026/05/29/pmFAZVO.jpg","row":2,"order":0,"status":"active","collapsed":false},
+  {"id":"淳崽","name":"淳崽","avatar":"https://s41.ax1x.com/2026/05/24/pm9db3q.jpg","row":2,"order":0,"status":"active","collapsed":false},
+  {"id":"休葕","name":"休葕","avatar":"https://s41.ax1x.com/2026/05/29/pmFkb2n.jpg","row":1,"order":0,"status":"active","collapsed":false}
+ ],
+ "edges": [
+  {"a":"譜天之下","b":"天訁","type":"xiaohao"},
+  {"a":"八万春丷","b":"天訁","type":"shifu"},
+  {"a":"姜闻野","b":"天訁","type":"shifu"},
+  {"a":"杏酥仁","b":"天訁","type":"shifu"},
+  {"a":"燕山晦明","b":"天訁","type":"shifu"},
+  {"a":"江瑜七","b":"天訁","type":"bwshifu"},
+  {"a":"虞珂白","b":"天訁","type":"bwshifu"},
+  {"a":"沈岁愉","b":"天訁","type":"bwshifu"},
+  {"a":"|昙梦|","b":"天訁","type":"bwshifu"},
+  {"a":"说画","b":"八万春丷","type":"shifu"},
+  {"a":"壹前","b":"八万春丷","type":"shifu"},
+  {"a":"月落山深","b":"八万春丷","type":"shifu"},
+  {"a":"想画","b":"燕山晦明","type":"shifu"},
+  {"a":"祈曜","b":"燕山晦明","type":"bwshifu"},
+  {"a":"淳崽","b":"|昙梦|","type":"bwshifu"},
+  {"a":"休葕","b":"天訁","type":"bwshifu"}
+ ],
+ "rowNames":["开山","二代","三代","四代","五代"]
+};
+
+/* ================= 常量与状态 ================= */
+const LS_KEY = "shimenpu_v1";
+const CARD_W = 104, CARD_H = 132, GAP_X = 40, GAP_Y = 76, LANE_TOP = 64, LANE_PAD = 46;
+const MINI_W = 64, MINI_H = 84;
+const REL_COLOR = { shifu:"#d8c9a3", bwshifu:"#7d838e", jieyi:"#d4af37", xiayuan:"#e06c8d", qinyou:"#6fa8d8", xiaohao:"#6b6f78" };
+const REL_NAME = { shifu:"正式师徒", bwshifu:"编外师徒", jieyi:"结义", xiayuan:"侠缘", qinyou:"亲友", xiaohao:"小号" };
+const STATUS_NAME = { active:"在门", away:"出走", retired:"隐退" };
+const CN = ["一","二","三","四","五","六","七","八","九","十","十一","十二","十三","十四","十五","十六","十七","十八","十九","二十"];
+
+let data = loadData();
+let cam = { x: 60, y: 30, k: 1 };
+let selectedId = null, searchHits = new Set(), focusId = null;
+let undoStack = [];
+let posMap = new Map();      // id -> {x,y,w,h,line}
+let laneInfo = [];           // {y,h}
+let dragState = null, panState = null;
+const pointers = new Map();  // pointerId -> {x,y} for pinch
+
+const stage = document.getElementById('stage');
+const world = document.getElementById('world');
+const svg = document.getElementById('links');
+const lanesEl = document.getElementById('lanes');
+const cardsEl = document.getElementById('cards');
+const drawer = document.getElementById('drawer');
+
+const isMobile = () => window.matchMedia("(max-width:640px)").matches;
+const rowCap = () => isMobile() ? 5 : 10;
+
+/* ================= 数据读写 ================= */
+function loadData(){
+  try{
+    const s = localStorage.getItem(LS_KEY);
+    if(s){ const d = JSON.parse(s); if(d && d.people && d.edges) return d; }
+  }catch(e){}
+  return JSON.parse(JSON.stringify(INITIAL_DATA));
+}
+function save(){
+  localStorage.setItem(LS_KEY, JSON.stringify(data));
+  cloudDirty = true; updateCloudStatus();
+}
+/* ================= GitHub 云端发布 ================= */
+let cloudDirty = false;
+function ghCfg(){
+  try{ return JSON.parse(localStorage.getItem('shimenpu_gh')||'{}'); }catch(e){ return {}; }
+}
+function updateCloudStatus(msg){
+  const el = document.getElementById('cloudStatus');
+  if(!el) return;
+  const c = ghCfg();
+  el.textContent = msg ?? (c.owner ? (cloudDirty?'● 有未发布的修改':'✓ 已与云端一致') : '未配置云端（点"云端设置"）');
+}
+function openGhModal(){
+  const c = ghCfg();
+  document.getElementById('ghOwner').value = c.owner||'';
+  document.getElementById('ghRepo').value = c.repo||'';
+  document.getElementById('ghBranch').value = c.branch||'main';
+  document.getElementById('ghToken').value = c.token||'';
+  openModal('ghModal');
+}
+document.getElementById('ghCfgBtn').onclick = openGhModal;
+document.getElementById('ghSave').onclick = ()=>{
+  const c = {
+    owner: document.getElementById('ghOwner').value.trim(),
+    repo: document.getElementById('ghRepo').value.trim(),
+    branch: document.getElementById('ghBranch').value.trim()||'main',
+    token: document.getElementById('ghToken').value.trim()
+  };
+  localStorage.setItem('shimenpu_gh', JSON.stringify(c));
+  closeModal('ghModal'); updateCloudStatus(); toast("云端设置已保存");
+};
+async function publish(){
+  const c = ghCfg();
+  if(!c.owner || !c.repo || !c.token){ openGhModal(); toast("请先完成云端设置"); return; }
+  updateCloudStatus('☁ 发布中…');
+  try{
+    const api = `https://api.github.com/repos/${c.owner}/${c.repo}/contents/data.json`;
+    const headers = { 'Authorization':'Bearer '+c.token, 'Accept':'application/vnd.github+json' };
+    const get = await fetch(api+'?ref='+(c.branch||'main'), {headers});
+    if(get.status===401||get.status===403){ updateCloudStatus(); toast("令牌无效或无仓库权限"); return; }
+    const sha = get.ok ? (await get.json()).sha : undefined;
+    const content = btoa(String.fromCharCode(...new TextEncoder().encode(JSON.stringify(data,null,1))));
+    const put = await fetch(api, { method:'PUT', headers,
+      body: JSON.stringify({ message:'师门谱更新 '+new Date().toLocaleString('zh-CN'), content, sha, branch:c.branch||'main' }) });
+    if(!put.ok){ const t = await put.text(); console.warn(t); updateCloudStatus(); toast("发布失败（"+put.status+"）"); return; }
+    cloudDirty = false; updateCloudStatus(); toast("☁ 已发布，约 1 分钟后全群可见");
+  }catch(e){ updateCloudStatus(); toast("网络异常，发布失败"); }
+}
+document.getElementById('pubBtn').onclick = publish;
+
+/* ================= 头像上传（拖入名片 / 抽屉按钮） ================= */
+cardsEl.addEventListener('dragover', (e)=>{
+  if(!editMode) return;
+  const card = e.target.closest('.card');
+  if(!card) return;
+  e.preventDefault(); card.classList.add('hit');
+});
+cardsEl.addEventListener('dragleave', (e)=>{
+  const card = e.target.closest('.card'); if(card) card.classList.remove('hit');
+});
+cardsEl.addEventListener('drop', (e)=>{
+  const card = e.target.closest('.card');
+  if(card) card.classList.remove('hit');
+  if(!editMode || !card) return;
+  e.preventDefault();
+  const f = e.dataTransfer.files && e.dataTransfer.files[0];
+  if(f && f.type.startsWith('image/')) uploadAvatar(card.dataset.id, f);
+  else toast("请拖入图片文件");
+});
+function compressImage(file){
+  return new Promise((res, rej)=>{
+    const img = new Image();
+    img.onload = ()=>{
+      const s = Math.min(1, 256/Math.max(img.width, img.height));
+      const w = Math.max(1, Math.round(img.width*s)), h = Math.max(1, Math.round(img.height*s));
+      const cv = document.createElement('canvas'); cv.width = w; cv.height = h;
+      cv.getContext('2d').drawImage(img, 0, 0, w, h);
+      URL.revokeObjectURL(img.src);
+      res(cv.toDataURL('image/jpeg', 0.85).split(',')[1]);
+    };
+    img.onerror = rej;
+    img.src = URL.createObjectURL(file);
+  });
+}
+async function uploadAvatar(id, file){
+  const c = ghCfg();
+  if(!c.owner || !c.repo || !c.token){ openGhModal(); toast("上传头像需先完成云端设置"); return; }
+  toast("🖼 压缩上传中…");
+  try{
+    const b64 = await compressImage(file);
+    const path = 'avatars/' + encodeURIComponent(id) + '.jpg';   // 一人固定一个文件，新图覆盖旧图
+    const api = `https://api.github.com/repos/${c.owner}/${c.repo}/contents/${path}`;
+    const headers = { 'Authorization':'Bearer '+c.token, 'Accept':'application/vnd.github+json' };
+    const get = await fetch(api+'?ref='+(c.branch||'main'), {headers});
+    const sha = get.ok ? (await get.json()).sha : undefined;
+    const put = await fetch(api, { method:'PUT', headers,
+      body: JSON.stringify({ message:'头像更新 '+id, content:b64, sha, branch:c.branch||'main' }) });
+    if(!put.ok){ toast("头像上传失败（"+put.status+"）"); return; }
+    snapshot();
+    person(id).avatar = path + '?v=' + Date.now();   // 防 CDN 缓存
+    save();
+    await publish();
+    toast("🖼 头像已更新并发布");
+  }catch(e){ toast("头像上传失败"); }
+}
+/* 打开页面时拉取线上最新数据（本地有未发布修改时不覆盖） */
+async function refreshRemote(){
+  try{
+    const r = await fetch('data.json?t='+Date.now());
+    if(!r.ok) return;
+    const d = await r.json();
+    if(!d.people || !d.edges) return;
+    if(cloudDirty) { updateCloudStatus('● 有未发布的本地修改（云端已有其他版本）'); return; }
+    data = d; localStorage.setItem(LS_KEY, JSON.stringify(data));
+    cloudDirty = false; render(); fitView(); updateCloudStatus();
+  }catch(e){ /* file:// 或离线时忽略 */ }
+}
+function snapshot(){ undoStack.push(JSON.stringify(data)); if(undoStack.length>30) undoStack.shift(); }
+function undo(){
+  if(!undoStack.length){ toast("没有可撤销的操作"); return; }
+  data = JSON.parse(undoStack.pop()); save(); selectedId=null; closeDrawer(); render(); toast("已撤销");
+}
+function person(id){ return data.people.find(p=>p.id===id); }
+function toast(msg){
+  const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
+  clearTimeout(t._tm); t._tm=setTimeout(()=>t.classList.remove('show'),1800);
+}
+
+/* ================= 可见性（折叠分支 / 聚焦） ================= */
+function childrenOf(id){ // 师徒下游（正式+编外）
+  return data.edges.filter(e=>e.b===id&&(e.type==='shifu'||e.type==='bwshifu')).map(e=>e.a);
+}
+function hiddenSet(){
+  const hidden = new Set();
+  const walk = (id)=>{ childrenOf(id).forEach(c=>{ if(!hidden.has(c)){ hidden.add(c); walk(c);} }); };
+  data.people.forEach(p=>{ if(p.collapsed) walk(p.id); });
+  return hidden;
+}
+function miniOf(){ // 小号 -> 主号
+  const m = new Map();
+  data.edges.filter(e=>e.type==='xiaohao').forEach(e=>m.set(e.a,e.b));
+  return m;
+}
+function visiblePeople(){
+  const hidden = hiddenSet(), minis = miniOf();
+  let list = data.people.filter(p=>!hidden.has(p.id) && !minis.has(p.id));
+  if(focusId){
+    const keep = new Set([focusId]);
+    // 师承上线
+    let cur = focusId;
+    for(let i=0;i<20;i++){
+      const up = data.edges.find(e=>e.a===cur&&(e.type==='shifu'||e.type==='bwshifu'));
+      if(!up || keep.has(up.b)) break; keep.add(up.b); cur = up.b;
+    }
+    // 直接下线
+    childrenOf(focusId).forEach(c=>keep.add(c));
+    // 全部横向关系
+    data.edges.forEach(e=>{
+      if(e.a===focusId) keep.add(e.b);
+      if(e.b===focusId) keep.add(e.a);
+    });
+    list = list.filter(p=>keep.has(p.id));
+  }
+  return list;
+}
+
+/* ================= 布局 ================= */
+function layout(){
+  posMap = new Map(); laneInfo = [];
+  const vis = visiblePeople();
+  const minis = miniOf();
+  const cap = rowCap();
+  const rows = new Map();
+  vis.forEach(p=>{ if(!rows.has(p.row)) rows.set(p.row,[]); rows.get(p.row).push(p); });
+  const maxRow = Math.max(data.rowNames.length-1, ...data.people.map(p=>p.row), 0);
+  // 主师父映射（正式优先）
+  const parentOf = new Map();
+  data.edges.forEach(e=>{
+    if(e.type!=='shifu'&&e.type!=='bwshifu') return;
+    const cur = parentOf.get(e.a);
+    if(!cur || (cur.type!=='shifu' && e.type==='shifu')) parentOf.set(e.a, {b:e.b, type:e.type});
+  });
+  let y = 0;
+  for(let r=0;r<=maxRow;r++){
+    const raw = rows.get(r)||[];
+    // 师门聚簇排序：有可见师父的徒弟聚成一簇，对齐师父正下方
+    const clusters = new Map(); // parentId -> members
+    const singles = [];
+    raw.forEach(p=>{
+      const par = parentOf.get(p.id);
+      if(par && posMap.has(par.b)){
+        if(!clusters.has(par.b)) clusters.set(par.b, []);
+        clusters.get(par.b).push(p);
+      }else singles.push(p);
+    });
+    clusters.forEach(list=>list.sort((a,b)=>{
+      if((a.slot??null)!==null||(b.slot??null)!==null) return (a.slot??999)-(b.slot??999); // 手动插位优先
+      const ta = parentOf.get(a.id).type, tb = parentOf.get(b.id).type;
+      if(ta!==tb) return ta==='shifu' ? -1 : 1;          // 正式在前，编外随后
+      return ((a.order||99)-(b.order||99)) || a.id.localeCompare(b.id,'zh');
+    }));
+    singles.sort((a,b)=>((a.slot??999)-(b.slot??999)) || ((a.order||99)-(b.order||99)) || a.id.localeCompare(b.id,'zh'));
+    const entities = [
+      ...[...clusters.entries()].map(([pid,list])=>({x: posMap.get(pid).x, list})),
+      ...singles.map((p,i)=>({x: 110 + i*(CARD_W+GAP_X)*1.5 + 3000, list:[p]}))
+    ].sort((a,b)=>a.x-b.x);
+    const members = entities.flatMap(e=>e.list);
+    // 一排始终平铺，不折行
+    const h = LANE_TOP + CARD_H + LANE_PAD;
+    laneInfo.push({y, h, name: data.rowNames[r]||`第${r+1}排`});
+    members.forEach((p,i)=>{
+      const startX = 110;
+      const x = startX + i*(CARD_W+GAP_X);
+      const py = y + LANE_TOP;
+      posMap.set(p.id, {x, y:py, w:CARD_W, h:CARD_H, line:0});
+    });
+    // 自由位：手动拖过的卡片用自己记住的 X，自动卡避让
+    const taken = []; // {line, x}
+    members.forEach(p=>{
+      if(p.x==null) return;
+      const pos = posMap.get(p.id);
+      pos.x = p.x; pos.free = true;
+      taken.push({line:pos.line, x:p.x});
+    });
+    members.forEach(p=>{
+      if(p.x!=null) return;
+      const pos = posMap.get(p.id);
+      let x = pos.x;
+      while(taken.some(q=>q.line===pos.line && x < q.x+CARD_W+12 && x+CARD_W+12 > q.x)) x += CARD_W+GAP_X;
+      pos.x = x; taken.push({line:pos.line, x});
+    });
+    y += h;
+  }
+  // 师父居中：不与排内邻居碰撞时，移到徒众跨度正中
+  for(let r=maxRow;r>=0;r--){
+    const members = (rows.get(r)||[]);
+    members.forEach(p=>{
+      if(p.x!=null) return; // 手动定位的师父不强行居中
+      const kids = childrenOf(p.id).filter(c=>posMap.has(c));
+      if(!kids.length) return;
+      const cur = posMap.get(p.id);
+      const cx = kids.reduce((s,k)=>s+posMap.get(k).x+posMap.get(k).w/2,0)/kids.length;
+      const nx = cx - cur.w/2;
+      const collide = members.some(q=>{
+        if(q.id===p.id) return false;
+        const qp = posMap.get(q.id);
+        return qp.line===cur.line && nx < qp.x+qp.w+8 && nx+cur.w+8 > qp.x;
+      });
+      if(!collide && Math.abs(nx-cur.x)>4) cur.x = nx;
+    });
+  }
+  // 小号贴主号
+  minis.forEach((mainId, miniId)=>{
+    const mp = posMap.get(mainId), mperson = person(miniId);
+    if(mp && mperson && !hiddenSet().has(miniId) && (!focusId || miniId===focusId || mainId===focusId)){
+      posMap.set(miniId, {x: mp.x + mp.w + 10, y: mp.y + 20, w: MINI_W, h: MINI_H, mini:true, mainId});
+    }
+  });
+  return y;
+}
+function laneAt(worldY){
+  for(let i=0;i<laneInfo.length;i++){
+    if(worldY >= laneInfo[i].y && worldY < laneInfo[i].y + laneInfo[i].h) return i;
+  }
+  return worldY < 0 ? 0 : laneInfo.length-1;
+}
+
+/* ================= 渲染 ================= */
+function rankSeal(p){
+  if(!p.order || p.order<1) return "";
+  if(p.order===1) return "大徒";
+  const t = CN[p.order-1] || p.order;
+  return t + "徒";
+}
+function esc(s){ return String(s??"").replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+
+function render(){
+  const totalH = layout();
+  // 相机
+  world.style.transform = `translate(${cam.x}px,${cam.y}px) scale(${cam.k})`;
+  // 泳道
+  let lh = "";
+  laneInfo.forEach((L)=>{
+    lh += `<div class="lane" style="top:${L.y}px;height:${L.h}px;width:4000px">
+      <div class="lane-bg"></div><div class="lane-tag">${esc(L.name)}</div></div>`;
+  });
+  lanesEl.innerHTML = lh;
+  // SVG
+  svg.setAttribute("width", 4000); svg.setAttribute("height", totalH+200);
+  svg.innerHTML = edgeSvg();
+  svg.classList.toggle("dim", !!selectedId);
+  // 卡片
+  let ch = "";
+  posMap.forEach((pos, id)=>{
+    const p = person(id); if(!p) return;
+    const seal = pos.mini ? "" : rankSeal(p);
+    const kids = childrenOf(id).filter(c=>!hiddenSet().has(c)||true).length;
+    const branchBadge = (p.collapsed && kids>0) ? `<div class="branch">门下 ${descendantCount(id)} 人 ▸</div>` :
+      (!p.collapsed && kids>0 ? `<div class="branch" style="background:#a89a80">收拢 ▾</div>` : "");
+    const stBadge = p.status==="away" ? `<div class="st-badge away">去</div>` :
+      p.status==="retired" ? `<div class="st-badge retired">隐</div>` : "";
+    const cls = ["card", pos.mini?"mini":"", selectedId===id?"sel":"", searchHits.has(id)?"hit":"",
+      p.status==="away"?"st-away":"", p.status==="retired"?"st-retired":""].join(" ");
+    const av = p.avatar ? `<img src="${esc(p.avatar)}" loading="lazy" onerror="this.remove()">` : "名";
+    ch += `<div class="${cls}" data-id="${esc(id)}" style="left:${pos.x}px;top:${pos.y}px;${pos.mini?"width:"+MINI_W+"px":""}">
+      ${stBadge}<div class="av">${av}</div>
+      <div class="pid">${esc(p.id)}</div><div class="pname">${esc(p.name||"—")}</div>
+      ${seal?`<div class="seal">${seal}</div>`:""}${branchBadge}</div>`;
+  });
+  cardsEl.innerHTML = ch;
+}
+function descendantCount(id){
+  const seen = new Set(); const walk=(x)=>{childrenOf(x).forEach(c=>{if(!seen.has(c)){seen.add(c);walk(c);}});};
+  walk(id); return seen.size;
+}
+
+/* ---- 连线 ---- */
+function edgeSvg(){
+  let out = "";
+  const hl = (id)=> selectedId && (id===selectedId);
+  // 师徒总线
+  const parents = new Map();
+  data.edges.forEach(e=>{
+    if(e.type!=='shifu'&&e.type!=='bwshifu') return;
+    if(!posMap.has(e.a)||!posMap.has(e.b)) return;
+    if(!parents.has(e.b)) parents.set(e.b,{formal:[],bw:[]});
+    parents.get(e.b)[e.type==='shifu'?'formal':'bw'].push(e.a);
+  });
+  parents.forEach((g, pid)=>{
+    const pp = posMap.get(pid);
+    const px = pp.x+pp.w/2, py = pp.y+pp.h;
+    // 正式+编外共用一条总线：下引线实线=正式，虚线=编外
+    const all = [
+      ...g.formal.map(id=>({id, bw:false})),
+      ...g.bw.map(id=>({id, bw:true}))
+    ].map(o=>({...o, p:posMap.get(o.id)})).sort((a,b)=>a.p.x-b.p.x);
+    if(!all.length) return;
+    const midY = Math.min(...all.map(c=>c.p.y)) - 34;
+    const xs = all.map(c=>c.p.x+c.p.w/2);
+    const anyHl = hl(pid) || all.some(c=>hl(c.id));
+    const dimCls = selectedId && !anyHl ? 'class="fdim"' : "";
+    let trunk = `M ${px} ${py} V ${midY}`;
+    if(xs.length>1) trunk += ` M ${Math.min(...xs)} ${midY} H ${Math.max(...xs)}`;
+    out += `<path d="${trunk}" stroke="${REL_COLOR.shifu}" stroke-width="2.2" ${dimCls}/>`;
+    all.forEach(c=>{
+      const x = c.p.x+c.p.w/2;
+      out += `<path d="M ${x} ${midY} V ${c.p.y}" stroke="${c.bw?REL_COLOR.bwshifu:REL_COLOR.shifu}"
+        stroke-width="${c.bw?1.6:2.2}" ${c.bw?'stroke-dasharray="5 4"':''} ${dimCls}/>`;
+    });
+  });
+  // 横向/跨排关系（可多条）
+  // 先按“人对”分组，再逐组分配错开的弧线
+  const pairGroups = new Map(); // key -> edges[]
+  data.edges.forEach(e=>{
+    if(e.type!=='jieyi'&&e.type!=='xiayuan'&&e.type!=='qinyou') return;
+    if(!posMap.has(e.a)||!posMap.has(e.b)) return;
+    const key = [e.a,e.b].sort().join("|");
+    if(!pairGroups.has(key)) pairGroups.set(key, []);
+    pairGroups.get(key).push(e);
+  });
+  pairGroups.forEach(group=>{
+    const total = group.length;
+    group.forEach((e, idx)=>{
+      const A = posMap.get(e.a), B = posMap.get(e.b);
+      const sameRow = Math.abs(A.y-B.y) < CARD_H;
+      const layer = idx;
+      const dimCls = selectedId && !hl(e.a) && !hl(e.b) ? 'class="fdim"' : "";
+      let d, mx, my;
+      if(sameRow){
+        // 同排：从顶边起弧向上绕过中间名片，端点藏进卡片底下
+        const x1=A.x+A.w/2, y1=A.y+8, x2=B.x+B.w/2, y2=B.y+8;
+        const apex = Math.min(A.y,B.y) - 26 - layer*30;
+        const cy = 2*apex - (y1+y2)/2;
+        d = `M ${x1} ${y1} Q ${(x1+x2)/2} ${cy} ${x2} ${y2}`;
+        mx = (x1+x2)/2; my = apex + 13;
+      }else{
+        const top = A.y<B.y ? A : B, bot = A.y<B.y ? B : A;
+        const x1=top.x+top.w-6, y1=top.y+top.h/2, x2=bot.x+bot.w-6, y2=bot.y+bot.h/2;
+        const cx = Math.max(x1,x2) + 50 + idx*36;
+        d = `M ${x1} ${y1} C ${cx} ${y1}, ${cx} ${y2}, ${x2} ${y2}`;
+        // 三次贝塞尔 t=0.5 的真实中点
+        mx = (x1 + 3*cx + 3*cx + x2)/8;
+        my = (y1 + 3*y1 + 3*y2 + y2)/8;
+      }
+      // 默认浅色不抢眼，选中相关人才点亮
+      const lit = selectedId && (hl(e.a) || hl(e.b));
+      const op = lit ? .95 : .18;
+      out += `<path d="${d}" stroke="${REL_COLOR[e.type]}" stroke-width="${lit?2.4:1.6}" opacity="${op}"/>`;
+      // 点亮时标注关系名
+      if(lit){
+        out += `<text x="${mx}" y="${my}" font-size="10" fill="${REL_COLOR[e.type]}" text-anchor="middle">${REL_NAME[e.type]}</text>`;
+      }
+    });
+  });
+  // 小号
+  data.edges.forEach(e=>{
+    if(e.type!=='xiaohao') return;
+    if(!posMap.has(e.a)||!posMap.has(e.b)) return;
+    const A=posMap.get(e.a), B=posMap.get(e.b);
+    out += `<path d="M ${B.x+B.w} ${B.y+40} L ${A.x} ${A.y+30}" stroke="${REL_COLOR.xiaohao}"
+      stroke-width="1.4" stroke-dasharray="4 3"/>`;
+  });
+  return out;
+}
+
+/* ================= 相机 ================= */
+function applyCam(){ world.style.transform = `translate(${cam.x}px,${cam.y}px) scale(${cam.k})`; }
+function toWorld(cx, cy){
+  const r = stage.getBoundingClientRect();
+  return { x:(cx-r.left-cam.x)/cam.k, y:(cy-r.top-cam.y)/cam.k };
+}
+function fitView(){
+  if(!posMap.size){ cam={x:60,y:30,k:1}; applyCam(); return; }
+  let minX=1e9,minY=1e9,maxX=-1e9,maxY=-1e9;
+  posMap.forEach(p=>{ minX=Math.min(minX,p.x); minY=Math.min(minY,p.y);
+    maxX=Math.max(maxX,p.x+p.w); maxY=Math.max(maxY,p.y+p.h); });
+  const sw=stage.clientWidth, sh=stage.clientHeight, pad=50;
+  let k = Math.min((sw-pad*2)/Math.max(300,maxX-minX+160), (sh-pad*2)/Math.max(300,maxY-minY+80), 1.2);
+  cam = { x: pad - minX*k + 80*k, y: pad - minY*k, k };
+  // 手机上全图太小时，改为聚焦开山人，保证可读
+  if(isMobile() && k < 0.45){
+    const root = data.people.find(p=>p.row===0 && posMap.has(p.id));
+    const rp = root ? posMap.get(root.id) : null;
+    k = 0.55;
+    cam.k = k;
+    if(rp){
+      cam.x = sw/2 - (rp.x+rp.w/2)*k;
+      cam.y = sh*0.28 - (rp.y+rp.h/2)*k;
+    }
+  }
+  applyCam();
+}
+function flyTo(id){
+  const p = posMap.get(id); if(!p) return;
+  const k = Math.max(cam.k, isMobile()?0.9:1);
+  const tx = stage.clientWidth/2 - (p.x+p.w/2)*k;
+  const ty = stage.clientHeight/2 - (p.y+p.h/2)*k;
+  // 简单动画
+  const s = {...cam}, t0 = performance.now();
+  function step(t){
+    const r = Math.min(1,(t-t0)/350), e = 1-Math.pow(1-r,3);
+    cam = { x:s.x+(tx-s.x)*e, y:s.y+(ty-s.y)*e, k:s.k+(k-s.k)*e };
+    applyCam(); if(r<1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+/* ================= 指针交互 ================= */
+stage.addEventListener('pointerdown', (e)=>{
+  pointers.set(e.pointerId, {x:e.clientX,y:e.clientY});
+  if(pointers.size===2){ panState=null; dragState&&(dragState.cancel=true); dragState=null; return; }
+  const card = e.target.closest('.card');
+  if(card){
+    const id = card.dataset.id;
+    const w = toWorld(e.clientX,e.clientY);
+    const pos = posMap.get(id);
+    dragState = { id, sx:w.x, sy:w.y, ox:pos.x, oy:pos.y, moved:false, cancel:false };
+  }else{
+    panState = { sx:e.clientX, sy:e.clientY, cx:cam.x, cy:cam.y };
+    stage.classList.add('grabbing');
+  }
+});
+stage.addEventListener('pointermove', (e)=>{
+  if(!pointers.has(e.pointerId)) return;
+  pointers.set(e.pointerId, {x:e.clientX,y:e.clientY});
+  if(pointers.size===2){
+    const [p1,p2] = [...pointers.values()];
+    const d = Math.hypot(p1.x-p2.x, p1.y-p2.y);
+    if(!stage._pd){ stage._pd = d; return; }
+    // 以双指中点为锚缩放
+    const mx = (p1.x+p2.x)/2, my = (p1.y+p2.y)/2;
+    const w0 = toWorld(mx, my);
+    cam.k = Math.max(.15, Math.min(3, cam.k * d/stage._pd));
+    stage._pd = d;
+    const r = stage.getBoundingClientRect();
+    cam.x = mx - r.left - w0.x*cam.k;
+    cam.y = my - r.top - w0.y*cam.k;
+    applyCam(); return;
+  }
+  if(dragState && !dragState.cancel){
+    const w = toWorld(e.clientX,e.clientY);
+    if(!dragState.moved && Math.hypot(w.x-dragState.sx, w.y-dragState.sy) > 6/cam.k) dragState.moved = true;
+    if(dragState.moved){
+      const el = cardsEl.querySelector(`[data-id="${CSS.escape(dragState.id)}"]`);
+      if(el){
+        el.classList.add('drag');
+        el.style.left = (dragState.ox + w.x - dragState.sx) + 'px';
+        el.style.top = (dragState.oy + w.y - dragState.sy) + 'px';
+      }
+    }
+    return;
+  }
+  if(panState){
+    cam.x = panState.cx + e.clientX - panState.sx;
+    cam.y = panState.cy + e.clientY - panState.sy;
+    applyCam();
+  }
+});
+function endPointer(e){
+  pointers.delete(e.pointerId);
+  if(pointers.size<2) stage._pd = null;
+  stage.classList.remove('grabbing');
+  if(dragState){
+    const ds = dragState; dragState = null;
+    if(ds.cancel){ render(); return; }
+    if(!ds.moved){ onCardTap(ds.id); return; }
+    const p = person(ds.id);
+    const el = cardsEl.querySelector(`[data-id="${CSS.escape(ds.id)}"]`);
+    const dropX = parseFloat(el.style.left), dropY = parseFloat(el.style.top);
+    const targetRow = Math.max(0, Math.min(laneInfo.length-1, laneAt(dropY + CARD_H/2)));
+    snapshot();
+    // 自由定位：记住落点 X；跨排则改辈分
+    p.x = dropX;
+    if(targetRow !== p.row){ p.row = targetRow; p.slot = null; toast(`移至「${laneInfo[targetRow]?.name||''}」`); }
+    save(); render();
+  }
+  panState = null;
+}
+stage.addEventListener('pointerup', endPointer);
+stage.addEventListener('pointercancel', endPointer);
+stage.addEventListener('wheel', (e)=>{
+  e.preventDefault();
+  const w0 = toWorld(e.clientX, e.clientY);
+  cam.k = Math.max(.15, Math.min(3, cam.k * (e.deltaY>0?0.9:1.1)));
+  const r = stage.getBoundingClientRect();
+  cam.x = e.clientX - r.left - w0.x*cam.k;
+  cam.y = e.clientY - r.top - w0.y*cam.k;
+  applyCam();
+}, {passive:false});
+
+/* ================= 卡片点按 / 抽屉 ================= */
+function onCardTap(id){
+  const p = person(id);
+  // 点击分支徽标区域（底部 18px）切换折叠
+  selectedId = id; render(); openDrawer(id);
+  flyTo(id);
+}
+function toggleCollapse(id){
+  const p = person(id); snapshot();
+  p.collapsed = !p.collapsed; save(); render(); openDrawer(id);
+}
+function openDrawer(id){
+  const p = person(id); if(!p) return;
+  const rels = data.edges.filter(e=>e.a===id||e.b===id);
+  const relHtml = rels.length ? rels.map((e,i)=>{
+    const other = e.a===id ? e.b : e.a;
+    const dir = (e.type==='shifu'||e.type==='bwshifu') ? (e.b===id?`${other} → 徒 ${id}`:`${id} → 徒 ${other}`) :
+      e.type==='xiaohao' ? (e.b===id?`${other} 的小号`:`${other} 的主号`) : `${e.a} ↔ ${e.b}`;
+    return `<div class="rel-item"><span class="lg-line" style="border-color:${REL_COLOR[e.type]};${e.type==='bwshifu'||e.type==='xiaohao'?'border-top-style:dashed':''}"></span>
+      <span>${REL_NAME[e.type]} · ${esc(dir)}</span>
+      <button class="rm edit-only" data-ri="${data.edges.indexOf(e)}" title="解除关系">✕</button></div>`;
+  }).join("") : `<div style="font-size:12px;color:var(--ink-soft)">暂无关系</div>`;
+  const kids = descendantCount(id);
+  drawer.innerHTML = `
+    <h3>${esc(p.id)}</h3>
+    <div class="sub">${esc(p.name||"")} · ${STATUS_NAME[p.status]||"在门"} · ${laneInfo[p.row]?.name||"第"+(p.row+1)+"排"}${p.order?` · 同门第${p.order}`:""}</div>
+    <div class="drow"><b>关系 ${rels.length} 条</b></div>${relHtml}
+    <div class="acts">
+      <button class="pbtn edit-only" id="dEdit">✏️ 编辑资料</button>
+      <button class="pbtn edit-only" id="dAvatar">🖼 上传头像</button>
+      <button class="pbtn edit-only" id="dRel">🔗 与其建关系</button>
+      ${kids?`<button class="pbtn" id="dFold">${p.collapsed?`▸ 展开分支(${kids})`:"▾ 收拢分支"}</button>`:""}
+      ${p.x!=null?`<button class="pbtn" id="dDock">↺ 归位（回到自动排版）</button>`:""}
+      <button class="pbtn" id="dFocus">${focusId===id?"✕ 退出聚焦":"◎ 聚焦此人"}</button>
+      <button class="pbtn danger edit-only" id="dDel">🗑 除名</button>
+    </div>
+    <div class="acts"><button class="pbtn" id="dClose" style="width:100%">关闭</button></div>`;
+  drawer.classList.add('open');
+  drawer.querySelectorAll('.rm').forEach(b=>b.onclick=()=>{
+    snapshot(); data.edges.splice(+b.dataset.ri,1); save(); render(); openDrawer(id); toast("关系已解除");
+  });
+  document.getElementById('dEdit').onclick = ()=>openPersonModal(id);
+  document.getElementById('dAvatar').onclick = ()=>{
+    const ip = document.createElement('input'); ip.type='file'; ip.accept='image/*';
+    ip.onchange = (ev)=>{ const f = ev.target.files[0]; if(f) uploadAvatar(id, f); };
+    ip.click();
+  };
+  document.getElementById('dRel').onclick = ()=>openRelModal(id);
+  const df = document.getElementById('dFold');
+  if(df) df.onclick = ()=>toggleCollapse(id);
+  const dd = document.getElementById('dDock');
+  if(dd) dd.onclick = ()=>{ snapshot(); p.x=null; p.slot=null; save(); render(); openDrawer(id); toast("已归位"); };
+  document.getElementById('dFocus').onclick = ()=>{
+    focusId = focusId===id ? null : id; render();
+    if(focusId){ openDrawer(id); flyTo(id); } else { closeDrawer(); fitView(); }
+  };
+  document.getElementById('dDel').onclick = ()=>deletePerson(id);
+  document.getElementById('dClose').onclick = closeDrawer;
+}
+function closeDrawer(){ drawer.classList.remove('open'); }
+function deletePerson(id){
+  if(!confirm(`将「${id}」除名？其所有关系一并解除。`)) return;
+  snapshot();
+  data.people = data.people.filter(p=>p.id!==id);
+  data.edges = data.edges.filter(e=>e.a!==id&&e.b!==id);
+  if(focusId===id) focusId=null;
+  selectedId=null; save(); closeDrawer(); render(); toast("已除名");
+}
+
+/* ================= 弹窗 ================= */
+function openModal(id){ document.getElementById(id).classList.add('open'); }
+function closeModal(id){ document.getElementById(id).classList.remove('open'); }
+function fillPersonSelect(sel, pre){
+  sel.innerHTML = data.people.map(p=>`<option value="${esc(p.id)}" ${p.id===pre?"selected":""}>${esc(p.id)}</option>`).join("");
+}
+function openPersonModal(editId){
+  const m = document.getElementById('personModal');
+  document.getElementById('pmTitle').textContent = editId ? `编辑 · ${editId}` : "新增门人";
+  const p = editId ? person(editId) : null;
+  document.getElementById('pmId').value = p?p.id:"";
+  document.getElementById('pmId').disabled = !!p;
+  document.getElementById('pmName').value = p?p.name||"":"";
+  document.getElementById('pmAvatar').value = p?p.avatar||"":"";
+  document.getElementById('pmRow').innerHTML = laneNames().map((n,i)=>
+    `<option value="${i}" ${p&&p.row===i?"selected":""}>${esc(n)}</option>`).join("");
+  document.getElementById('pmStatus').value = p?p.status:"active";
+  document.getElementById('pmOrder').value = p?p.order||0:0;
+  m.dataset.edit = editId||"";
+  openModal('personModal');
+}
+function laneNames(){
+  const maxRow = Math.max(data.rowNames.length-1, ...data.people.map(p=>p.row), 0);
+  return Array.from({length:maxRow+1},(_,i)=>data.rowNames[i]||`第${i+1}排`);
+}
+document.getElementById('pmSave').onclick = ()=>{
+  const editId = document.getElementById('personModal').dataset.edit;
+  const id = document.getElementById('pmId').value.trim();
+  if(!id){ toast("ID 不能为空"); return; }
+  snapshot();
+  let p;
+  if(editId){ p = person(editId); }
+  else{
+    if(person(id)){ toast("ID 已存在"); undoStack.pop(); return; }
+    p = { id, row:0, order:0, status:"active", collapsed:false };
+    data.people.push(p);
+  }
+  p.name = document.getElementById('pmName').value.trim();
+  p.avatar = document.getElementById('pmAvatar').value.trim();
+  p.row = +document.getElementById('pmRow').value;
+  p.status = document.getElementById('pmStatus').value;
+  p.order = +document.getElementById('pmOrder').value||0;
+  p.slot = null; p.x = null;
+  save(); closeModal('personModal'); render();
+  if(selectedId===p.id) openDrawer(p.id);
+  toast(editId?"已保存":"已入门");
+};
+function openRelModal(preA){
+  if(data.people.length<2){ toast("至少两人才能结谊"); return; }
+  fillPersonSelect(document.getElementById('rmA'), preA);
+  fillPersonSelect(document.getElementById('rmB'));
+  openModal('relModal');
+}
+document.getElementById('rmSave').onclick = ()=>{
+  const a = document.getElementById('rmA').value, b = document.getElementById('rmB').value;
+  const type = document.getElementById('rmType').value;
+  if(a===b){ toast("不能选同一人"); return; }
+  if(data.edges.some(e=>e.a===a&&e.b===b&&e.type===type)){ toast("此关系已存在"); return; }
+  if((type==='shifu'||type==='bwshifu') && data.edges.some(e=>(e.type==='shifu'||e.type==='bwshifu')&&e.a===a)){
+    if(!confirm(`${a} 已有师父，确定再拜一师？`)) return;
+  }
+  snapshot(); data.edges.push({a,b,type});
+  // 师徒辈分建议：徒不高于师
+  const pa = person(a), pb = person(b);
+  if((type==='shifu'||type==='bwshifu') && pa.row <= pb.row){
+    pa.row = pb.row+1; pa.slot=null; pa.x=null; toast(`${a} 已自动下移一排，可在排管理中调整`);
+  }
+  if(type==='xiaohao'){ pa.row = pb.row; }
+  save(); closeModal('relModal'); render();
+  if(selectedId) openDrawer(selectedId);
+  toast("关系已建立");
+};
+
+/* ---- 排管理 ---- */
+function openRowsModal(){
+  const list = document.getElementById('rowsList');
+  list.innerHTML = laneNames().map((n,i)=>`
+    <div class="rowm-item">
+      <input value="${esc(n)}" data-ri="${i}">
+      <button class="pbtn danger" data-del="${i}">删</button>
+    </div>`).join("");
+  list.querySelectorAll('input').forEach(inp=>inp.onchange=()=>{
+    snapshot(); data.rowNames[+inp.dataset.ri] = inp.value.trim()||inp.dataset.ri+1+"";
+    save(); render();
+  });
+  list.querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>{
+    const i = +b.dataset.del;
+    if(data.people.some(p=>p.row===i)){ toast("此排尚有人，先移走"); return; }
+    snapshot(); data.rowNames.splice(i,1);
+    data.people.forEach(p=>{ if(p.row>i) p.row--; });
+    save(); render(); openRowsModal();
+  });
+  openModal('rowsModal');
+}
+document.getElementById('addRowBtn').onclick = ()=>{
+  snapshot(); data.rowNames.push(`第${data.rowNames.length+1}排`); save(); render(); openRowsModal();
+};
+
+/* ================= 搜索 ================= */
+document.getElementById('search').addEventListener('input', (e)=>{
+  const k = e.target.value.trim();
+  searchHits = new Set(k ? data.people.filter(p=>p.id.includes(k)||(p.name||"").includes(k)).map(p=>p.id) : []);
+  render();
+});
+document.getElementById('search').addEventListener('keydown', (e)=>{
+  if(e.key==='Enter' && searchHits.size){ flyTo([...searchHits][0]); }
+});
+
+/* ================= 顶栏 / 面板 ================= */
+document.getElementById('sealBtn').onclick = ()=>document.getElementById('panel').classList.toggle('open');
+let editMode = false;
+document.getElementById('modeBtn').onclick = ()=>{
+  editMode = !editMode;
+  document.body.classList.toggle('view', !editMode);
+  document.getElementById('modeBtn').textContent = editMode ? '👁 观察' : '✎ 编辑';
+  if(selectedId) openDrawer(selectedId);
+  toast(editMode ? '编辑模式：可调整关系与资料' : '观察模式：仅浏览与摆位');
+};
+document.getElementById('fitBtn').onclick = fitView;
+document.getElementById('undoBtn').onclick = undo;
+document.addEventListener('keydown', (e)=>{ if((e.ctrlKey||e.metaKey)&&e.key==='z'){ e.preventDefault(); undo(); } });
+document.getElementById('addPerson').onclick = ()=>openPersonModal(null);
+document.getElementById('addRel').onclick = ()=>openRelModal(null);
+document.getElementById('rowMgr').onclick = openRowsModal;
+
+/* ================= 导入导出 ================= */
+document.getElementById('exportBtn').onclick = ()=>{
+  const blob = new Blob([JSON.stringify(data,null,1)],{type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob); a.download = '师门谱数据.json'; a.click();
+  URL.revokeObjectURL(a.href); toast("已导出");
+};
+document.getElementById('importBtn').onclick = ()=>{
+  const ip = document.createElement('input'); ip.type='file'; ip.accept='.json';
+  ip.onchange = (e)=>{
+    const f = e.target.files[0]; if(!f) return;
+    const r = new FileReader();
+    r.onload = (ev)=>{
+      try{
+        let d = JSON.parse(ev.target.result);
+        if(Array.isArray(d)) d = convertLegacy(d);       // 旧版格式
+        if(!d.people || !d.edges) throw 0;
+        snapshot(); data = d; save(); selectedId=null; focusId=null;
+        render(); fitView(); toast("导入完成");
+      }catch{ alert("文件格式无法识别"); }
+    };
+    r.readAsText(f);
+  };
+  ip.click();
+};
+function convertLegacy(nodes){
+  const gens = {};
+  const gen = (nid, seen=[])=>{
+    if(nid in gens) return gens[nid];
+    const n = nodes.find(x=>x.id===nid);
+    if(!n || !n.masterId || seen.includes(nid)) return gens[nid]=0;
+    return gens[nid] = gen(n.masterId,[...seen,nid])+1;
+  };
+  nodes.forEach(n=>gen(n.id));
+  const people=[], edges=[];
+  nodes.forEach(n=>{
+    people.push({id:n.id, name:n.name||"", avatar:n.avatar||"", row:gens[n.id]||0,
+      order:0, status:"active", collapsed:false});
+    if(n.masterId) edges.push({a:n.id,b:n.masterId,type:"shifu"});
+    (n.bwsts||[]).forEach(b=>edges.push({a:n.id,b,type:"bwshifu"}));
+    (n.jys||[]).forEach(b=>{ if(n.id<b) edges.push({a:n.id,b,type:"jieyi"}); });
+    (n.xys||[]).forEach(b=>{ if(n.id<b) edges.push({a:n.id,b,type:"xiayuan"}); });
+    (n.qys||[]).forEach(b=>{ if(n.id<b) edges.push({a:n.id,b,type:"qinyou"}); });
+    if(n.mainId) edges.push({a:n.id,b:n.mainId,type:"xiaohao"});
+  });
+  // 编外下移
+  let moved = true;
+  while(moved){ moved=false;
+    edges.forEach(e=>{
+      const pa=people.find(p=>p.id===e.a), pb=people.find(p=>p.id===e.b);
+      if(!pa||!pb) return;
+      if((e.type==='shifu'||e.type==='bwshifu') && pa.row<pb.row+1){ pa.row=pb.row+1; moved=true; }
+      if(e.type==='xiaohao' && pa.row!==pb.row){ pa.row=pb.row; moved=true; }
+    });
+  }
+  return { people, edges, rowNames:["开山","二代","三代","四代","五代"] };
+}
+document.getElementById('resetBtn').onclick = ()=>{
+  if(!confirm("放弃当前全部修改，恢复到最初迁移的数据？")) return;
+  snapshot(); data = JSON.parse(JSON.stringify(INITIAL_DATA));
+  selectedId=null; focusId=null; save(); render(); fitView(); toast("已恢复初始数据");
+};
+
+/* ================= 分支折叠点击（徽标） ================= */
+cardsEl.addEventListener('pointerdown', (e)=>{
+  // 点在卡片底部徽标区域时直接折叠，不进入拖拽
+  const card = e.target.closest('.card');
+  if(card && e.target.classList.contains('branch')){
+    e.stopPropagation();
+    toggleCollapse(card.dataset.id);
+  }
+}, true);
+
+/* ================= 启动 ================= */
+function syncStage(){
+  stage.style.top = (document.getElementById('topbar').offsetHeight||61) + 'px';
+}
+window.addEventListener('resize', ()=>{ syncStage(); render(); });
+syncStage();
+render();
+fitView();
+updateCloudStatus();
+refreshRemote();
+</script>
+</body>
+</html>
