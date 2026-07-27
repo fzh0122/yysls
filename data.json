@@ -191,6 +191,17 @@
    "avatar": "avatars/%E6%B2%88%E8%81%B4%E6%BE%9C.jpg?v=1785151168000",
    "slot": null,
    "x": 1298.07
+  },
+  {
+   "id": "王家老四",
+   "row": 1,
+   "order": 6,
+   "status": "active",
+   "collapsed": false,
+   "name": "王家老四",
+   "avatar": "avatars/%E7%8E%8B%E5%AE%B6%E8%80%81%E5%9B%9B.jpg?v=1785151283860",
+   "slot": null,
+   "x": 1427.87
   }
  ],
  "edges": [
@@ -331,6 +342,11 @@
   },
   {
    "a": "沈聴澜",
+   "b": "天訁",
+   "type": "shifu"
+  },
+  {
+   "a": "王家老四",
    "b": "天訁",
    "type": "shifu"
   }
