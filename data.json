@@ -19,7 +19,7 @@
    "status": "active",
    "collapsed": false,
    "slot": null,
-   "x": 681.994
+   "x": 675.437
   },
   {
    "id": "八万春丷",
@@ -135,9 +135,9 @@
    "avatar": "https://s41.ax1x.com/2026/05/24/pm9dT4s.jpg",
    "row": 2,
    "order": 1,
-   "status": "retired",
+   "status": "away",
    "collapsed": false,
-   "x": 437.924,
+   "x": 439.016,
    "slot": null
   },
   {
@@ -148,7 +148,7 @@
    "order": 0,
    "status": "active",
    "collapsed": false,
-   "x": 560.598
+   "x": 558.959
   },
   {
    "id": "淳崽",
@@ -202,6 +202,17 @@
    "avatar": "avatars/%E7%8E%8B%E5%AE%B6%E8%80%81%E5%9B%9B.jpg?v=1785151283860",
    "slot": null,
    "x": 1427.87
+  },
+  {
+   "id": "小夜兮",
+   "row": 1,
+   "order": 7,
+   "status": "active",
+   "collapsed": false,
+   "name": "小夜兮",
+   "avatar": "avatars/%E5%B0%8F%E5%A4%9C%E5%85%AE.jpg?v=1785151327163",
+   "slot": null,
+   "x": 1553.84
   }
  ],
  "edges": [
@@ -347,6 +358,11 @@
   },
   {
    "a": "王家老四",
+   "b": "天訁",
+   "type": "shifu"
+  },
+  {
+   "a": "小夜兮",
    "b": "天訁",
    "type": "shifu"
   }
