@@ -7,7 +7,8 @@
    "row": 0,
    "order": 0,
    "status": "active",
-   "collapsed": false
+   "collapsed": false,
+   "x": 629.08
   },
   {
    "id": "譜天之下",
@@ -101,7 +102,7 @@
   {
    "id": "说画",
    "name": "画子",
-   "avatar": "https://s41.ax1x.com/2026/05/24/pm9dfu8.jpg",
+   "avatar": "avatars/%E8%AF%B4%E7%94%BB.jpg?v=1785150903515",
    "row": 2,
    "order": 1,
    "status": "active",
@@ -167,6 +168,17 @@
    "status": "active",
    "collapsed": false,
    "x": 1165.33
+  },
+  {
+   "id": "iii",
+   "row": 0,
+   "order": 0,
+   "status": "retired",
+   "collapsed": false,
+   "name": "师娘",
+   "avatar": "avatars/iii.jpg?v=1785150990961",
+   "slot": null,
+   "x": 820.94
   }
  ],
  "edges": [
@@ -299,6 +311,11 @@
    "a": "譜天之下",
    "b": "燕山晦明",
    "type": "shifu"
+  },
+  {
+   "a": "iii",
+   "b": "天訁",
+   "type": "xiayuan"
   }
  ],
  "rowNames": [
