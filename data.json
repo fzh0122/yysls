@@ -13,13 +13,13 @@
   {
    "id": "譜天之下",
    "name": "譜天之下虹虹",
-   "avatar": "avatars/%E8%AD%9C%E5%A4%A9%E4%B9%8B%E4%B8%8B.jpg?v=1785150834777",
+   "avatar": "avatars/%E8%AD%9C%E5%A4%A9%E4%B9%8B%E4%B8%8B.jpg?v=1785151089108",
    "row": 2,
    "order": 2,
    "status": "active",
    "collapsed": false,
    "slot": null,
-   "x": 686.093
+   "x": 681.994
   },
   {
    "id": "八万春丷",
@@ -77,7 +77,7 @@
    "order": 0,
    "status": "active",
    "collapsed": false,
-   "x": 901.09
+   "x": 909.287
   },
   {
    "id": "沈岁愉",
@@ -135,9 +135,10 @@
    "avatar": "https://s41.ax1x.com/2026/05/24/pm9dT4s.jpg",
    "row": 2,
    "order": 1,
-   "status": "active",
+   "status": "retired",
    "collapsed": false,
-   "x": 423.669
+   "x": 437.924,
+   "slot": null
   },
   {
    "id": "祈曜",
@@ -147,7 +148,7 @@
    "order": 0,
    "status": "active",
    "collapsed": false,
-   "x": 563.331
+   "x": 560.598
   },
   {
    "id": "淳崽",
@@ -179,6 +180,17 @@
    "avatar": "avatars/iii.jpg?v=1785150990961",
    "slot": null,
    "x": 820.94
+  },
+  {
+   "id": "沈聴澜",
+   "row": 1,
+   "order": 5,
+   "status": "active",
+   "collapsed": false,
+   "name": "沈聴澜",
+   "avatar": "avatars/%E6%B2%88%E8%81%B4%E6%BE%9C.jpg?v=1785151168000",
+   "slot": null,
+   "x": 1298.07
   }
  ],
  "edges": [
@@ -316,6 +328,11 @@
    "a": "iii",
    "b": "天訁",
    "type": "xiayuan"
+  },
+  {
+   "a": "沈聴澜",
+   "b": "天訁",
+   "type": "shifu"
   }
  ],
  "rowNames": [
