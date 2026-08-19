@@ -19,7 +19,7 @@
    "status": "active",
    "collapsed": false,
    "slot": null,
-   "x": 675.437
+   "x": 832.341
   },
   {
    "id": "八万春丷",
@@ -28,7 +28,8 @@
    "row": 1,
    "order": 1,
    "status": "active",
-   "collapsed": false
+   "collapsed": false,
+   "x": 222.126
   },
   {
    "id": "姜闻野",
@@ -38,26 +39,29 @@
    "order": 2,
    "status": "active",
    "collapsed": false,
-   "x": 291.705
+   "x": 333.497
   },
   {
    "id": "杏酥仁",
    "name": "杏酥仁",
    "avatar": "https://s41.ax1x.com/2026/05/24/pm9dGN9.jpg",
    "row": 1,
-   "order": 3,
+   "order": 0,
    "status": "active",
    "collapsed": false,
-   "x": 422.044
+   "x": 444.338,
+   "slot": null
   },
   {
    "id": "燕山晦明",
    "name": "燕山晦明",
    "avatar": "https://s41.ax1x.com/2026/05/29/pmFkXrV.jpg",
    "row": 1,
-   "order": 4,
+   "order": 0,
    "status": "active",
-   "collapsed": false
+   "collapsed": false,
+   "slot": null,
+   "x": 667.23
   },
   {
    "id": "江瑜七",
@@ -67,7 +71,7 @@
    "order": 0,
    "status": "active",
    "collapsed": false,
-   "x": 673.238
+   "x": 555.193
   },
   {
    "id": "虞珂白",
@@ -102,12 +106,12 @@
   {
    "id": "说画",
    "name": "画子",
-   "avatar": "avatars/%E8%AF%B4%E7%94%BB.jpg?v=1785150903515",
+   "avatar": "avatars/%E8%AF%B4%E7%94%BB.jpg?v=1787122068735",
    "row": 2,
    "order": 1,
    "status": "active",
    "collapsed": false,
-   "x": 35.9938
+   "x": 56.5232
   },
   {
    "id": "壹前",
@@ -137,7 +141,7 @@
    "order": 1,
    "status": "away",
    "collapsed": false,
-   "x": 439.016,
+   "x": 539.464,
    "slot": null
   },
   {
@@ -148,7 +152,7 @@
    "order": 0,
    "status": "active",
    "collapsed": false,
-   "x": 558.959
+   "x": 669.672
   },
   {
    "id": "淳崽",
@@ -202,17 +206,6 @@
    "avatar": "avatars/%E7%8E%8B%E5%AE%B6%E8%80%81%E5%9B%9B.jpg?v=1785151283860",
    "slot": null,
    "x": 1427.87
-  },
-  {
-   "id": "小夜兮",
-   "row": 1,
-   "order": 7,
-   "status": "active",
-   "collapsed": false,
-   "name": "小夜兮",
-   "avatar": "avatars/%E5%B0%8F%E5%A4%9C%E5%85%AE.jpg?v=1785151327163",
-   "slot": null,
-   "x": 1553.84
   }
  ],
  "edges": [
@@ -358,11 +351,6 @@
   },
   {
    "a": "王家老四",
-   "b": "天訁",
-   "type": "shifu"
-  },
-  {
-   "a": "小夜兮",
    "b": "天訁",
    "type": "shifu"
   }
