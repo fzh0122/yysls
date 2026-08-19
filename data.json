@@ -19,7 +19,7 @@
    "status": "active",
    "collapsed": false,
    "slot": null,
-   "x": 800.08
+   "x": 785.416
   },
   {
    "id": "姜闻野",
@@ -131,7 +131,7 @@
    "order": 1,
    "status": "away",
    "collapsed": false,
-   "x": 539.464,
+   "x": 557.794,
    "slot": null
   },
   {
@@ -216,7 +216,7 @@
    "status": "active",
    "collapsed": false,
    "name": "手臂",
-   "avatar": "",
+   "avatar": "avatars/%E6%88%91%E9%A9%AC%E4%B8%8A%E8%A6%81%E6%89%93%E4%BD%A0.jpg?v=1787122357751",
    "slot": null,
    "x": 392.427
   }
@@ -356,6 +356,21 @@
    "a": "我马上要打你",
    "b": "江弥声丷",
    "type": "shifu"
+  },
+  {
+   "a": "江弥声丷",
+   "b": "江瑜七",
+   "type": "qinyou"
+  },
+  {
+   "a": "江弥声丷",
+   "b": "虞珂白",
+   "type": "qinyou"
+  },
+  {
+   "a": "沈岁愉",
+   "b": "江弥声丷",
+   "type": "qinyou"
   }
  ],
  "rowNames": [
