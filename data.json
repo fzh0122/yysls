@@ -19,17 +19,7 @@
    "status": "active",
    "collapsed": false,
    "slot": null,
-   "x": 832.341
-  },
-  {
-   "id": "八万春丷",
-   "name": "八万春丷",
-   "avatar": "avatars/%E5%85%AB%E4%B8%87%E6%98%A5%E4%B8%B7.jpg?v=1785150785615",
-   "row": 1,
-   "order": 1,
-   "status": "active",
-   "collapsed": false,
-   "x": 222.126
+   "x": 800.08
   },
   {
    "id": "姜闻野",
@@ -121,7 +111,7 @@
    "order": 2,
    "status": "active",
    "collapsed": false,
-   "x": 167.011
+   "x": 168.477
   },
   {
    "id": "月落山深",
@@ -131,7 +121,7 @@
    "order": 3,
    "status": "active",
    "collapsed": false,
-   "x": 296.204
+   "x": 277.874
   },
   {
    "id": "想画",
@@ -169,10 +159,11 @@
    "name": "休葕",
    "avatar": "avatars/%E4%BC%91%E8%91%95.jpg?v=1785150866236",
    "row": 1,
-   "order": 0,
+   "order": 5,
    "status": "active",
    "collapsed": false,
-   "x": 1165.33
+   "x": null,
+   "slot": null
   },
   {
    "id": "iii",
@@ -188,32 +179,49 @@
   {
    "id": "沈聴澜",
    "row": 1,
-   "order": 5,
+   "order": 3,
    "status": "active",
    "collapsed": false,
    "name": "沈聴澜",
    "avatar": "avatars/%E6%B2%88%E8%81%B4%E6%BE%9C.jpg?v=1785151168000",
    "slot": null,
-   "x": 1298.07
+   "x": 1164.34
   },
   {
    "id": "王家老四",
    "row": 1,
-   "order": 6,
+   "order": 4,
    "status": "active",
    "collapsed": false,
    "name": "王家老四",
    "avatar": "avatars/%E7%8E%8B%E5%AE%B6%E8%80%81%E5%9B%9B.jpg?v=1785151283860",
    "slot": null,
-   "x": 1427.87
+   "x": 1282.38
+  },
+  {
+   "id": "江弥声丷",
+   "row": 1,
+   "order": 1,
+   "status": "active",
+   "collapsed": false,
+   "name": "江弥声丷",
+   "avatar": "avatars/%E6%B1%9F%E5%BC%A5%E5%A3%B0%E4%B8%B7.jpg?v=1787122347243",
+   "slot": null,
+   "x": 199.743
+  },
+  {
+   "id": "我马上要打你",
+   "row": 2,
+   "order": 4,
+   "status": "active",
+   "collapsed": false,
+   "name": "手臂",
+   "avatar": "",
+   "slot": null,
+   "x": 392.427
   }
  ],
  "edges": [
-  {
-   "a": "八万春丷",
-   "b": "天訁",
-   "type": "shifu"
-  },
   {
    "a": "姜闻野",
    "b": "天訁",
@@ -248,21 +256,6 @@
    "a": "|昙梦|",
    "b": "天訁",
    "type": "bwshifu"
-  },
-  {
-   "a": "说画",
-   "b": "八万春丷",
-   "type": "shifu"
-  },
-  {
-   "a": "壹前",
-   "b": "八万春丷",
-   "type": "shifu"
-  },
-  {
-   "a": "月落山深",
-   "b": "八万春丷",
-   "type": "shifu"
   },
   {
    "a": "想画",
@@ -305,21 +298,6 @@
    "type": "jieyi"
   },
   {
-   "a": "八万春丷",
-   "b": "江瑜七",
-   "type": "qinyou"
-  },
-  {
-   "a": "八万春丷",
-   "b": "虞珂白",
-   "type": "qinyou"
-  },
-  {
-   "a": "八万春丷",
-   "b": "沈岁愉",
-   "type": "qinyou"
-  },
-  {
    "a": "江瑜七",
    "b": "沈岁愉",
    "type": "qinyou"
@@ -352,6 +330,31 @@
   {
    "a": "王家老四",
    "b": "天訁",
+   "type": "shifu"
+  },
+  {
+   "a": "江弥声丷",
+   "b": "天訁",
+   "type": "shifu"
+  },
+  {
+   "a": "说画",
+   "b": "江弥声丷",
+   "type": "shifu"
+  },
+  {
+   "a": "壹前",
+   "b": "江弥声丷",
+   "type": "shifu"
+  },
+  {
+   "a": "月落山深",
+   "b": "江弥声丷",
+   "type": "shifu"
+  },
+  {
+   "a": "我马上要打你",
+   "b": "江弥声丷",
    "type": "shifu"
   }
  ],
