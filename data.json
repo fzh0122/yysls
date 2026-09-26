@@ -114,16 +114,6 @@
    "x": 168.477
   },
   {
-   "id": "月落山深",
-   "name": "笙笙辞",
-   "avatar": "https://s41.ax1x.com/2026/05/24/pm9dIEQ.jpg",
-   "row": 2,
-   "order": 3,
-   "status": "active",
-   "collapsed": false,
-   "x": 277.874
-  },
-  {
    "id": "想画",
    "name": "敌意",
    "avatar": "https://s41.ax1x.com/2026/05/24/pm9dT4s.jpg",
@@ -216,7 +206,7 @@
    "status": "active",
    "collapsed": false,
    "name": "霜霜",
-   "avatar": "avatars/%E9%9C%9C%E5%89%8D%E5%89%91.jpg?v=1790438306244",
+   "avatar": "avatars/%E9%9C%9C%E5%89%8D%E5%89%91.jpg?v=1790438632160",
    "slot": null,
    "x": 510.7
   },
@@ -241,6 +231,17 @@
    "avatar": "avatars/%E5%A7%9C%E5%8F%99%E7%91%B6.jpg?v=1790438441747",
    "slot": null,
    "x": 159.102
+  },
+  {
+   "id": "渡云笙",
+   "row": 2,
+   "order": 3,
+   "status": "active",
+   "collapsed": false,
+   "name": "渡云笙",
+   "avatar": "",
+   "slot": null,
+   "x": 281.41
   }
  ],
  "edges": [
@@ -357,6 +358,36 @@
   {
    "a": "洛子依",
    "b": "休葕",
+   "type": "shifu"
+  },
+  {
+   "a": "姜叙瑶",
+   "b": "天訁",
+   "type": "shifu"
+  },
+  {
+   "a": "壹前",
+   "b": "姜叙瑶",
+   "type": "shifu"
+  },
+  {
+   "a": "渡云笙",
+   "b": "姜叙瑶",
+   "type": "shifu"
+  },
+  {
+   "a": "说画",
+   "b": "姜叙瑶",
+   "type": "shifu"
+  },
+  {
+   "a": "我马上要打你",
+   "b": "姜叙瑶",
+   "type": "shifu"
+  },
+  {
+   "a": "霜前剑",
+   "b": "姜叙瑶",
    "type": "shifu"
   }
  ],
