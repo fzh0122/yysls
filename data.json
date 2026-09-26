@@ -85,13 +85,14 @@
   },
   {
    "id": "|昙梦|",
-   "name": "八万昙梦",
+   "name": "元泓乐",
    "avatar": "https://s41.ax1x.com/2026/05/29/pmFkzaF.jpg",
    "row": 1,
    "order": 0,
    "status": "active",
    "collapsed": false,
-   "x": 1033.32
+   "x": null,
+   "slot": null
   },
   {
    "id": "说画",
@@ -99,9 +100,10 @@
    "avatar": "avatars/%E8%AF%B4%E7%94%BB.jpg?v=1787122068735",
    "row": 2,
    "order": 1,
-   "status": "active",
+   "status": "retired",
    "collapsed": false,
-   "x": 56.5232
+   "x": 46.1738,
+   "slot": null
   },
   {
    "id": "壹前",
@@ -230,7 +232,7 @@
    "name": "姜叙瑶（八万春、江弥声）",
    "avatar": "avatars/%E5%A7%9C%E5%8F%99%E7%91%B6.jpg?v=1790438441747",
    "slot": null,
-   "x": 159.102
+   "x": 202.545
   },
   {
    "id": "渡云笙",
@@ -239,7 +241,7 @@
    "status": "active",
    "collapsed": false,
    "name": "渡云笙",
-   "avatar": "",
+   "avatar": "avatars/%E6%B8%A1%E4%BA%91%E7%AC%99.jpg?v=1790438660777",
    "slot": null,
    "x": 281.41
   }
@@ -389,6 +391,21 @@
    "a": "霜前剑",
    "b": "姜叙瑶",
    "type": "shifu"
+  },
+  {
+   "a": "姜叙瑶",
+   "b": "江瑜七",
+   "type": "qinyou"
+  },
+  {
+   "a": "姜叙瑶",
+   "b": "虞珂白",
+   "type": "qinyou"
+  },
+  {
+   "a": "姜叙瑶",
+   "b": "沈岁愉",
+   "type": "qinyou"
   }
  ],
  "rowNames": [
