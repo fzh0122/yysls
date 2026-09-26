@@ -199,17 +199,6 @@
    "x": 1384.02
   },
   {
-   "id": "江弥声丷",
-   "row": 1,
-   "order": 1,
-   "status": "active",
-   "collapsed": false,
-   "name": "江弥声丷",
-   "avatar": "avatars/%E6%B1%9F%E5%BC%A5%E5%A3%B0%E4%B8%B7.jpg?v=1787122347243",
-   "slot": null,
-   "x": 199.743
-  },
-  {
    "id": "我马上要打你",
    "row": 2,
    "order": 4,
@@ -238,9 +227,20 @@
    "status": "active",
    "collapsed": false,
    "name": "洛子依",
-   "avatar": "avatars/%E6%B4%9B%E5%AD%90%E4%BE%9D.jpg?v=1789390554131",
+   "avatar": "avatars/%E6%B4%9B%E5%AD%90%E4%BE%9D.jpg?v=1790438313781",
    "slot": null,
    "x": 1149.11
+  },
+  {
+   "id": "姜叙瑶",
+   "row": 1,
+   "order": 1,
+   "status": "active",
+   "collapsed": false,
+   "name": "姜叙瑶（八万春、江弥声）",
+   "avatar": "avatars/%E5%A7%9C%E5%8F%99%E7%91%B6.jpg?v=1790438441747",
+   "slot": null,
+   "x": 159.102
   }
  ],
  "edges": [
@@ -350,53 +350,8 @@
    "type": "shifu"
   },
   {
-   "a": "江弥声丷",
-   "b": "天訁",
-   "type": "shifu"
-  },
-  {
-   "a": "说画",
-   "b": "江弥声丷",
-   "type": "shifu"
-  },
-  {
-   "a": "壹前",
-   "b": "江弥声丷",
-   "type": "shifu"
-  },
-  {
-   "a": "月落山深",
-   "b": "江弥声丷",
-   "type": "shifu"
-  },
-  {
-   "a": "我马上要打你",
-   "b": "江弥声丷",
-   "type": "shifu"
-  },
-  {
-   "a": "江弥声丷",
-   "b": "江瑜七",
-   "type": "qinyou"
-  },
-  {
-   "a": "江弥声丷",
-   "b": "虞珂白",
-   "type": "qinyou"
-  },
-  {
-   "a": "沈岁愉",
-   "b": "江弥声丷",
-   "type": "qinyou"
-  },
-  {
    "a": "休葕",
    "b": "天訁",
-   "type": "shifu"
-  },
-  {
-   "a": "霜前剑",
-   "b": "江弥声丷",
    "type": "shifu"
   },
   {
